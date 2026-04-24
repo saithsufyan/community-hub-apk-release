@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover,maximum-scale=1.0,user-scalable=no"/>
+<title>Community Hub</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231B5E3C'/><text x='50%25' y='57%25' dominant-baseline='middle' text-anchor='middle' font-size='13' font-weight='900' fill='%23fff'>CH</text></svg>"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<template id="__bundler_thumbnail" data-bg-color="#F5F4F0">
+  <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="300" fill="#F5F4F0"/>
+    <rect x="0" y="0" width="100" height="300" fill="#1B5E3C"/>
+    <rect x="110" y="20" width="270" height="60" rx="12" fill="#fff"/>
+    <circle cx="145" cy="50" r="18" fill="#1B5E3C"/>
+    <rect x="172" y="38" width="120" height="10" rx="5" fill="#E4F2EB"/>
+    <rect x="172" y="54" width="80" height="8" rx="4" fill="#E4F2EB"/>
+    <rect x="110" y="92" width="128" height="70" rx="12" fill="#fff"/>
+    <rect x="248" y="92" width="132" height="70" rx="12" fill="#fff"/>
+    <rect x="110" y="172" width="270" height="110" rx="12" fill="#fff"/>
+    <rect x="126" y="186" width="100" height="8" rx="4" fill="#1B5E3C"/>
+    <rect x="126" y="202" width="220" height="6" rx="3" fill="#E4F2EB"/>
+    <rect x="126" y="216" width="180" height="6" rx="3" fill="#E4F2EB"/>
+    <rect x="126" y="230" width="200" height="6" rx="3" fill="#E4F2EB"/>
+    <circle cx="30" cy="80" r="16" fill="#2D8B5A"/>
+    <circle cx="30" cy="130" r="16" fill="#2D8B5A" opacity=".5"/>
+    <circle cx="30" cy="180" r="16" fill="#2D8B5A" opacity=".5"/>
+    <circle cx="30" cy="230" r="16" fill="#2D8B5A" opacity=".5"/>
+  </svg>
+</template>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body,#root{height:100%;width:100%;overflow:hidden}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#F5F4F0}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#d4cfc8;border-radius:4px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+button{transition:all .15s ease;cursor:pointer;border:none}
+button:active{transform:scale(.97)}
+input,textarea,select{font-family:inherit;outline:none}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const{useState,useEffect,useRef,useMemo}=React;
+const MILL_HERO="data:image/webp;base64,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";
+const MILL_SB="data:image/webp;base64,UklGRgIEAABXRUJQVlA4IPYDAABwEgCdASpIAEgAPpFCmUklpCIhKPkriLASCWUAzic6pDNtYM1axKgnzygwOwJyR3oeoF3m5WPwN6AH5y9AP6T8330f/5vcG/mPT9/cj2L/2OPQ/JxzDWlbJr+s5LM2dCpVwvcDQ3lwX14DYOzaQPdaMGQtSHxjSOtjBEw5/yO6gQcbB/AocYtUjbvqo001KEyQwTajKEHPVNTEbgAA/vrAqKkSYfHpyTmMfLBNPpqryyGPf2wxd4v/wNb2TUNb/rWSTuvT7jorhX+v1YwSL+UUguiKqxmQq3CYNCT52n95Mgwc9r7cWI8m3+JsZWqAGxcBAYrjkgaGnUPfWXtXY3dbO8Fp5UI64KmD/1SlKIZz7NevWb9QXxDg4Fke3TT9CYAQEK47ejxpGoOBGcdIXbAKDNwBlGqTzS4RqUVqPjlu7qubQ7u4SmLO9OGrkrGPLGbCrdG0GemFYpjQ5s/+5cA5XHWxEJngnAqxRAwpcQN0TPQPRh7Ukh67hfobmApHi/NHdRxKDvGhkpveDvF2RbgD4WpqWU0PPCLFtQz51c26DQ4NcUzxeRB+Y8pBqFNk7+9GL2r97eIQas/FLpfk41meY8wqI2LPvp4vLrQWY0z48JiUL5n3XOlatwcFAUcElF2iMussQ3AL3DoM+QNPBzv762LSUBJx+3l7kReQwMgt1u8ofjzVYqNoKBGSahAVDuV/NhNqgYOzguIE2qOGgTV9lBNBPG0HG9zrtlm9A2f5fprZm+VgS8pPVxq7mK+D2yRUP8VlHi4wyfTtzqYVYjvnfd2uU7jS2Hgzwyrl1aUd7fFC2xokD/GbKUDNqz6FiA7M3L6w0dMLHW8DgxaCN6NzCv2J25HEY+6FyRMr+mI6+gEcKuDO6JhgI0sPdEUMvSHcZj/6oR/iZfmEt1fa8TJaF/bCZtKo7xY7XZoEGSV3RqMPpthTVGkwkHBoMuh7jchesZNjk1ojs86nlsTdfpfHqxTQkx5tKdSCDoGDLvdkESTceiuUsdD2QJ90wdT7XMAtF5L/DS/L9yCLo/ZaXLc7QnqWQpRCjm0RvNBnB5l8jULs/2ECu4dP0b7rHNXcHC5nFQz256cvTpVdnNU9m/rGE5Vq2jJxTDWlagNL/hP58DS9GdXXBpUjVTznGs8bZzctSxwjWYx6MBpK8iuFwforRkqBFXSi7Imi3aw2bsdI2BeMpnqn1MOCirTuDrZbIegqJrN4x4t7hVbNmpfQHeZtdXMGutDpzSVj9wPN4KjZzLwF2Hl1+6N9ggH2LMVA1cGs7xsCFLBxoSLe10EkWScvUmTi/AACF2pRsnMwkDYdKTL+j3RAqOnfzkwQhtj81LTC2hkEAAA=";
+
+// ─── Icons ──────────────────────────────────────────────────────────────────
+const Ic={
+  Home:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+  Bell:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>,
+  Cal:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+  Wrench:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>,
+  Chat:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>,
+  Menu:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>,
+  X:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+  Send:()=><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
+  Search:()=><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+  Plus:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+  Pin:()=><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+  Clock:()=><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+  Users:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>,
+  File:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>,
+  ChevR:()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>,
+  Check:()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+  AlertT:()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+  BarC:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>,
+  Grid:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>,
+  Switch:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>,
+  Download:()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
+  Star:()=><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+  Img:()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
+};
+
+// ─── Auth Screen ─────────────────────────────────────────────────────────────
+const DEMO_ACCOUNTS=[
+  {email:"resident@millbrook.com",password:"resident123",role:"resident",name:"Alex Johnson",av:"AJ",unit:"1942 Willowbrook Ln"},
+  {email:"staff@millbrook.com",password:"staff123",role:"staff",name:"Evelyne Djamat Dubois",av:"ED",unit:"Admin Office"},
+  {email:"manager@community.com",password:"manage123",role:"staff",name:"Michael Torres",av:"MT",unit:"HOA Office"},
+];
+
+const AuthScreen=({onAuth,mob})=>{
+  const[mode,setMode]=useState("login"); // login | signup
+  const[role,setRole]=useState("resident");
+  const[email,setEmail]=useState("");
+  const[pass,setPass]=useState("");
+  const[name,setName]=useState("");
+  const[unit,setUnit]=useState("");
+  const[err,setErr]=useState("");
+  const[showPass,setShowPass]=useState(false);
+  const t0={primary:"#1B5E3C",primaryLight:"#E4F2EB",primarySoft:"#2D8B5A",accent:"#C5954B",bg:"#F5F4F0",card:"#fff",text:"#1A1612",soft:"#4A3F35",muted:"#9A8E82",border:"rgba(0,0,0,0.09)"};
+
+  const doLogin=()=>{
+    setErr("");
+    const found=DEMO_ACCOUNTS.find(a=>a.email===email&&a.password===pass);
+    if(found){onAuth(found);return;}
+    if(!email.includes("@")){setErr("Please enter a valid email.");return;}
+    if(pass.length<6){setErr("Password must be at least 6 characters.");return;}
+    // demo: any valid email = resident login
+    onAuth({email,role:"resident",name:email.split("@")[0],av:email[0].toUpperCase()+email[1].toUpperCase(),unit:"Community Resident"});
+  };
+  const doSignup=()=>{
+    setErr("");
+    if(!name.trim()){setErr("Please enter your full name.");return;}
+    if(!email.includes("@")){setErr("Please enter a valid email.");return;}
+    if(pass.length<6){setErr("Password must be at least 6 characters.");return;}
+    const ini=name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
+    onAuth({email,role,name,av:ini,unit:unit||"Community Resident"});
+  };
+
+  return(
+    <div style={{minHeight:"100vh",background:`linear-gradient(160deg,${t0.bg} 0%,#E8E3DC 100%)`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:20,fontFamily:"'Plus Jakarta Sans',sans-serif"}}>
+      <div style={{width:"100%",maxWidth:400,animation:"fadeUp .6s ease"}}>
+        {/* Logo */}
+        <div style={{textAlign:"center",marginBottom:32}}>
+          <div style={{width:60,height:60,borderRadius:18,background:`linear-gradient(135deg,${t0.primary},${t0.primarySoft})`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,fontWeight:900,color:"#fff",margin:"0 auto 16px",boxShadow:`0 8px 24px ${t0.primary}33`}}>CH</div>
+          <h1 style={{fontSize:26,fontWeight:900,color:t0.text,fontFamily:"'Lora',serif",lineHeight:1.2}}>Community Hub</h1>
+          <p style={{fontSize:13,color:t0.muted,marginTop:6}}>Your neighbourhood, connected</p>
+        </div>
+        {/* Card */}
+        <div style={{background:t0.card,borderRadius:24,boxShadow:"0 4px 32px rgba(0,0,0,0.10)",overflow:"hidden"}}>
+          {/* Mode toggle */}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",borderBottom:`1px solid ${t0.border}`}}>
+            {[["login","Sign In"],["signup","Sign Up"]].map(([k,l])=>(
+              <button key={k} onClick={()=>{setMode(k);setErr("");}} style={{padding:"14px",fontSize:14,fontWeight:mode===k?800:500,color:mode===k?t0.primary:t0.muted,background:mode===k?t0.primaryLight:"transparent",borderBottom:mode===k?`2px solid ${t0.primary}`:"2px solid transparent",borderRadius:0,transition:"all .2s"}}>{l}</button>
+            ))}
+          </div>
+          <div style={{padding:24,display:"flex",flexDirection:"column",gap:14}}>
+            {/* Role selector */}
+            <div>
+              <div style={{fontSize:11,fontWeight:700,color:t0.muted,letterSpacing:.8,textTransform:"uppercase",marginBottom:8}}>I am a</div>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+                {[["resident","🏠","Resident","Access community features"],["staff","🛡️","Staff / Admin","Management & oversight"]].map(([k,ic,l,sub])=>(
+                  <button key={k} onClick={()=>setRole(k)} style={{padding:"12px 10px",borderRadius:14,border:`1.5px solid ${role===k?t0.primary:t0.border}`,background:role===k?t0.primaryLight:"transparent",textAlign:"left",transition:"all .2s"}}>
+                    <div style={{fontSize:20,marginBottom:4}}>{ic}</div>
+                    <div style={{fontSize:13,fontWeight:700,color:role===k?t0.primary:t0.text}}>{l}</div>
+                    <div style={{fontSize:10,color:t0.muted,marginTop:1,lineHeight:1.3}}>{sub}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* Fields */}
+            {mode==="signup"&&<div>
+              <div style={{fontSize:11,fontWeight:700,color:t0.muted,letterSpacing:.6,marginBottom:6}}>FULL NAME</div>
+              <input value={name} onChange={e=>setName(e.target.value)} placeholder="Jane Smith" style={{width:"100%",padding:"11px 14px",borderRadius:12,border:`1px solid ${t0.border}`,background:t0.bg,color:t0.text,fontSize:13,boxSizing:"border-box"}}/>
+            </div>}
+            <div>
+              <div style={{fontSize:11,fontWeight:700,color:t0.muted,letterSpacing:.6,marginBottom:6}}>EMAIL</div>
+              <input value={email} onChange={e=>setEmail(e.target.value)} type="email" placeholder="you@email.com" style={{width:"100%",padding:"11px 14px",borderRadius:12,border:`1px solid ${t0.border}`,background:t0.bg,color:t0.text,fontSize:13,boxSizing:"border-box"}}/>
+            </div>
+            {mode==="signup"&&<div>
+              <div style={{fontSize:11,fontWeight:700,color:t0.muted,letterSpacing:.6,marginBottom:6}}>UNIT / ADDRESS</div>
+              <input value={unit} onChange={e=>setUnit(e.target.value)} placeholder="e.g. 1942 Willowbrook Ln" style={{width:"100%",padding:"11px 14px",borderRadius:12,border:`1px solid ${t0.border}`,background:t0.bg,color:t0.text,fontSize:13,boxSizing:"border-box"}}/>
+            </div>}
+            <div>
+              <div style={{fontSize:11,fontWeight:700,color:t0.muted,letterSpacing:.6,marginBottom:6}}>PASSWORD</div>
+              <div style={{position:"relative"}}>
+                <input value={pass} onChange={e=>setPass(e.target.value)} onKeyDown={e=>e.key==="Enter"&&(mode==="login"?doLogin():doSignup())} type={showPass?"text":"password"} placeholder="••••••••" style={{width:"100%",padding:"11px 40px 11px 14px",borderRadius:12,border:`1px solid ${t0.border}`,background:t0.bg,color:t0.text,fontSize:13,boxSizing:"border-box"}}/>
+                <button onClick={()=>setShowPass(!showPass)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",color:t0.muted,fontSize:13,fontWeight:600}}>{showPass?"Hide":"Show"}</button>
+              </div>
+            </div>
+            {err&&<div style={{padding:"10px 14px",borderRadius:10,background:"#FEE2E2",color:"#DC2626",fontSize:12,fontWeight:600}}>{err}</div>}
+            <button onClick={mode==="login"?doLogin:doSignup} style={{padding:"13px",borderRadius:14,background:`linear-gradient(135deg,${t0.primary},${t0.primarySoft})`,color:"#fff",fontSize:14,fontWeight:800,boxShadow:`0 4px 16px ${t0.primary}33`,marginTop:2}}>
+              {mode==="login"?"Sign In →":"Create Account →"}
+            </button>
+            {/* Demo hint */}
+            <div style={{padding:"10px 14px",borderRadius:12,background:t0.bg,border:`1px dashed ${t0.border}`}}>
+              <div style={{fontSize:11,fontWeight:700,color:t0.muted,marginBottom:4}}>DEMO CREDENTIALS</div>
+              <div style={{fontSize:11,color:t0.soft,lineHeight:1.6}}>
+                <b>Resident:</b> resident@millbrook.com / resident123<br/>
+                <b>Staff:</b> staff@millbrook.com / staff123
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style={{textAlign:"center",fontSize:11,color:t0.muted,marginTop:16}}>By signing in you agree to our Terms of Service</p>
+      </div>
+    </div>
+  );
+};
+
+// ─── Staff Management Panel ───────────────────────────────────────────────────
+const MOCK_RESIDENTS=[
+  {id:1,name:"Alex Johnson",unit:"1942 Willowbrook Ln",email:"alex@email.com",status:"active",joined:"Jan 2024",dues:"paid",av:"AJ"},
+  {id:2,name:"Maria Martinez",unit:"1945 Willowbrook Ln",email:"maria@email.com",status:"active",joined:"Mar 2022",dues:"paid",av:"MM"},
+  {id:3,name:"Robert Kim",unit:"1930 Cross Oaks Dr",email:"rkim@email.com",status:"active",joined:"Jun 2023",dues:"overdue",av:"RK"},
+  {id:4,name:"Sandra Brown",unit:"1955 Willowbrook Ln",email:"sbrown@email.com",status:"active",joined:"Nov 2021",dues:"paid",av:"SB"},
+  {id:5,name:"Tom Garcia",unit:"1918 Community Ln",email:"tgarcia@email.com",status:"inactive",joined:"Aug 2020",dues:"overdue",av:"TG"},
+  {id:6,name:"Lisa Chen",unit:"1922 Cross Oaks Dr",email:"lchen@email.com",status:"active",joined:"Feb 2023",dues:"paid",av:"LC"},
+];
+
+const StaffPage=({mob,toast,t,data})=>{
+  const[tab,setTab]=useState("dashboard");
+  const[residents,setResidents]=useState(MOCK_RESIDENTS);
+  const[reqs,setReqs]=useState(data.requests);
+  const[resSearch,setResSearch]=useState("");
+  const[showAddRes,setShowAddRes]=useState(false);
+  const[newResName,setNewResName]=useState("");const[newResUnit,setNewResUnit]=useState("");const[newResEmail,setNewResEmail]=useState("");
+
+  const totalDues=residents.filter(r=>r.dues==="paid").length;
+  const overdue=residents.filter(r=>r.dues==="overdue").length;
+  const openReqs=reqs.filter(r=>r.status==="open").length;
+  const inProg=reqs.filter(r=>r.status==="in-progress").length;
+  const resolved=reqs.filter(r=>r.status==="resolved").length;
+
+  const updateReqStatus=(id,status)=>{setReqs(reqs.map(r=>r.id===id?{...r,status}:r));toast("Status updated!");};
+  const addResident=()=>{if(!newResName.trim())return;const ini=newResName.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();setResidents([{id:Date.now(),name:newResName,unit:newResUnit||"—",email:newResEmail||"—",status:"active",joined:"Just now",dues:"pending",av:ini},...residents]);setNewResName("");setNewResUnit("");setNewResEmail("");setShowAddRes(false);toast("Resident added!");};
+  const filteredRes=residents.filter(r=>!resSearch||r.name.toLowerCase().includes(resSearch.toLowerCase())||r.unit.toLowerCase().includes(resSearch.toLowerCase()));
+
+  const staffTabs=[["dashboard","Dashboard","📊"],["residents","Residents","👥"],["requests","Requests","🔧"],["reports","Reports","📈"]];
+  const statusColor={open:"#EF4444","in-progress":"#F59E0B",resolved:"#10B981"};
+  const statusLabel={open:"Open","in-progress":"In Progress",resolved:"Resolved"};
+  const typeIcons={electrical:"⚡",plumbing:"🔧",landscaping:"🌿",roadway:"🛣️",access:"🔐",amenity:"🏊",general:"📋"};
+
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      {/* Staff header */}
+      <div style={{background:`linear-gradient(135deg,${t.text},${t.soft})`,borderRadius:18,padding:"16px 20px",color:"#fff",display:"flex",alignItems:"center",gap:14}}>
+        <div style={{width:44,height:44,borderRadius:12,background:"rgba(255,255,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>🛡️</div>
+        <div><div style={{fontSize:16,fontWeight:800}}>Staff Management Portal</div><div style={{fontSize:12,opacity:.75,marginTop:2}}>{data.name} · Admin View</div></div>
+        <div style={{marginLeft:"auto",padding:"5px 12px",borderRadius:20,background:"rgba(255,255,255,0.15)",fontSize:11,fontWeight:700}}>STAFF</div>
+      </div>
+      {/* Sub-tabs */}
+      <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:2}}>
+        {staffTabs.map(([k,l,ic])=>(
+          <button key={k} onClick={()=>setTab(k)} style={{padding:"8px 16px",borderRadius:20,border:`1px solid ${tab===k?t.primary:t.border}`,background:tab===k?t.primaryLight:"transparent",color:tab===k?t.primary:t.muted,fontSize:12,fontWeight:tab===k?700:500,whiteSpace:"nowrap",display:"flex",alignItems:"center",gap:5}}>{ic} {l}</button>
+        ))}
+      </div>
+
+      {tab==="dashboard"&&<div style={{display:"flex",flexDirection:"column",gap:12}}>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10}}>
+          {[{l:"Total Residents",v:residents.length,sub:"registered",ic:"👥",c:t.primary},{l:"Dues Paid",v:totalDues,sub:`${overdue} overdue`,ic:"💳",c:"#059669"},{l:"Open Requests",v:openReqs,sub:`${inProg} in progress`,ic:"🔧",c:"#D97706"},{l:"Resolved",v:resolved,sub:"this month",ic:"✅",c:"#2D8B5A"}].map((s,i)=>(
+            <div key={i} style={{background:t.card,borderRadius:16,padding:"16px",boxShadow:t.shadow,border:`1px solid ${t.border}`}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
+                <span style={{fontSize:20}}>{s.ic}</span>
+                <span style={{fontSize:10,color:t.muted,fontWeight:600,textTransform:"uppercase"}}>{s.l}</span>
+              </div>
+              <div style={{fontSize:26,fontWeight:900,color:s.c}}>{s.v}</div>
+              <div style={{fontSize:11,color:t.muted,marginTop:2}}>{s.sub}</div>
+            </div>
+          ))}
+        </div>
+        {/* Pending requests */}
+        <div style={{background:t.card,borderRadius:16,padding:"16px 18px",boxShadow:t.shadow,border:`1px solid ${t.border}`}}>
+          <div style={{fontSize:13,fontWeight:800,color:t.text,marginBottom:12}}>Pending Action Required</div>
+          {reqs.filter(r=>r.status!=="resolved").slice(0,3).map((req,i)=>(
+            <div key={req.id} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 0",borderBottom:i<2?`1px solid ${t.border}`:"none"}}>
+              <span style={{fontSize:18}}>{typeIcons[req.type]||"📋"}</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:12,fontWeight:700,color:t.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{req.title}</div>
+                <div style={{fontSize:10,color:t.muted,marginTop:1}}>{req.priority} priority · {req.date}</div>
+              </div>
+              <select value={req.status} onChange={e=>updateReqStatus(req.id,e.target.value)} style={{padding:"4px 8px",borderRadius:8,border:`1px solid ${t.border}`,background:t.bg,color:statusColor[req.status],fontSize:11,fontWeight:700}}>
+                <option value="open">Open</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
+          ))}
+        </div>
+        {/* Overdue dues */}
+        {overdue>0&&<div style={{background:"#FEF3C7",borderRadius:16,padding:"14px 16px",border:"1px solid #FDE68A"}}>
+          <div style={{fontSize:13,fontWeight:800,color:"#92400E",marginBottom:8}}>⚠️ Overdue Dues</div>
+          {residents.filter(r=>r.dues==="overdue").map((r,i)=>(
+            <div key={r.id} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderTop:i>0?"1px solid #FDE68A":"none"}}>
+              <Av ini={r.av} sz={28} bg="linear-gradient(135deg,#D97706,#F59E0B)"/>
+              <div style={{flex:1}}><div style={{fontSize:12,fontWeight:700,color:"#78350F"}}>{r.name}</div><div style={{fontSize:10,color:"#92400E"}}>{r.unit}</div></div>
+              <button onClick={()=>{setResidents(residents.map(x=>x.id===r.id?{...x,dues:"paid"}:x));toast("Marked as paid!");}} style={{padding:"5px 12px",borderRadius:20,background:"#D97706",color:"#fff",fontSize:11,fontWeight:700}}>Mark Paid</button>
+            </div>
+          ))}
+        </div>}
+      </div>}
+
+      {tab==="residents"&&<div style={{display:"flex",flexDirection:"column",gap:10}}>
+        <div style={{display:"flex",gap:8}}>
+          <div style={{position:"relative",flex:1}}>
+            <div style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",color:t.muted,pointerEvents:"none",display:"flex"}}><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+            <input value={resSearch} onChange={e=>setResSearch(e.target.value)} placeholder="Search residents..." style={{width:"100%",padding:"10px 12px 10px 34px",borderRadius:30,border:`1px solid ${t.border}`,background:t.bg,color:t.text,fontSize:12,boxSizing:"border-box"}}/>
+          </div>
+          <button onClick={()=>setShowAddRes(true)} style={{padding:"10px 16px",borderRadius:30,background:t.primary,color:"#fff",fontSize:12,fontWeight:700,whiteSpace:"nowrap",display:"flex",alignItems:"center",gap:5}}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Add</button>
+        </div>
+        <div style={{fontSize:11,color:t.muted,fontWeight:600}}>{filteredRes.length} residents</div>
+        {filteredRes.map((r,i)=>(
+          <div key={r.id} style={{background:t.card,borderRadius:16,padding:"14px 16px",boxShadow:t.shadow,border:`1px solid ${t.border}`,animation:`fadeUp .3s ease ${i*40}ms both`}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <Av ini={r.av} sz={40} bg={`linear-gradient(135deg,${t.primary},${t.primarySoft})`}/>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+                  <span style={{fontSize:14,fontWeight:700,color:t.text}}>{r.name}</span>
+                  <span style={{padding:"1px 7px",borderRadius:20,background:r.status==="active"?"#D1FAE5":"#F3F4F6",color:r.status==="active"?"#059669":"#6B7280",fontSize:10,fontWeight:700}}>{r.status}</span>
+                  <span style={{padding:"1px 7px",borderRadius:20,background:r.dues==="paid"?"#D1FAE5":r.dues==="overdue"?"#FEE2E2":"#FEF3C7",color:r.dues==="paid"?"#059669":r.dues==="overdue"?"#DC2626":"#D97706",fontSize:10,fontWeight:700}}>Dues {r.dues}</span>
+                </div>
+                <div style={{fontSize:11,color:t.muted,marginTop:3}}>{r.unit} · {r.email}</div>
+                <div style={{fontSize:10,color:t.muted,marginTop:1}}>Member since {r.joined}</div>
+              </div>
+              <div style={{display:"flex",flexDirection:"column",gap:4}}>
+                <button onClick={()=>toast(`Emailing ${r.name}…`)} style={{padding:"5px 10px",borderRadius:8,background:t.primaryLight,color:t.primary,fontSize:11,fontWeight:700}}>Email</button>
+                <button onClick={()=>{setResidents(residents.map(x=>x.id===r.id?{...x,status:x.status==="active"?"inactive":"active"}:x));toast("Status updated!");}} style={{padding:"5px 10px",borderRadius:8,background:t.bg,color:t.muted,fontSize:11,fontWeight:600,border:`1px solid ${t.border}`}}>{r.status==="active"?"Deactivate":"Activate"}</button>
+              </div>
+            </div>
+          </div>
+        ))}
+        <Modal open={showAddRes} onClose={()=>setShowAddRes(false)} title="Add Resident" t={t}>
+          <div style={{display:"flex",flexDirection:"column",gap:12}}>
+            <input value={newResName} onChange={e=>setNewResName(e.target.value)} placeholder="Full name *" style={{width:"100%",padding:"11px 14px",borderRadius:12,border:`1px solid ${t.border}`,background:t.bg,color:t.text,fontSize:13,boxSizing:"border-box"}}/>
+            <input value={newResUnit} onChange={e=>setNewResUnit(e.target.value)} placeholder="Unit / Address" style={{width:"100%",padding:"11px 14px",borderRadius:12,border:`1px solid ${t.border}`,background:t.bg,color:t.text,fontSize:13,boxSizing:"border-box"}}/>
+            <input value={newResEmail} onChange={e=>setNewResEmail(e.target.value)} placeholder="Email address" style={{width:"100%",padding:"11px 14px",borderRadius:12,border:`1px solid ${t.border}`,background:t.bg,color:t.text,fontSize:13,boxSizing:"border-box"}}/>
+            <button onClick={addResident} style={{padding:"13px",borderRadius:12,background:t.primary,color:"#fff",fontSize:14,fontWeight:700}}>Add Resident</button>
+          </div>
+        </Modal>
+      </div>}
+
+      {tab==="requests"&&<div style={{display:"flex",flexDirection:"column",gap:10}}>
+        <div style={{fontSize:12,color:t.muted,fontWeight:600}}>Manage & assign all maintenance requests</div>
+        {reqs.map((req,i)=>(
+          <div key={req.id} style={{background:t.card,borderRadius:16,padding:"14px 16px",boxShadow:t.shadow,border:`1px solid ${t.border}`,animation:`fadeUp .3s ease ${i*50}ms both`}}>
+            <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
+              <span style={{fontSize:22,flexShrink:0}}>{typeIcons[req.type]||"📋"}</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:14,fontWeight:700,color:t.text}}>{req.title}</div>
+                {req.desc&&<div style={{fontSize:12,color:t.muted,marginTop:4,lineHeight:1.5}}>{req.desc}</div>}
+                <div style={{display:"flex",alignItems:"center",gap:8,marginTop:8,flexWrap:"wrap"}}>
+                  <span style={{fontSize:11,color:t.muted}}>{req.unit}</span>
+                  <span style={{fontSize:11,color:t.muted}}>·</span>
+                  <span style={{fontSize:11,color:t.muted}}>{req.date}</span>
+                  <span style={{padding:"2px 8px",borderRadius:20,background:req.priority==="high"?"#FEE2E2":req.priority==="medium"?"#FEF3C7":"#D1FAE5",color:req.priority==="high"?"#DC2626":req.priority==="medium"?"#D97706":"#059669",fontSize:10,fontWeight:700}}>{req.priority}</span>
+                </div>
+              </div>
+              <select value={req.status} onChange={e=>updateReqStatus(req.id,e.target.value)} style={{padding:"7px 10px",borderRadius:10,border:`1px solid ${statusColor[req.status]}44`,background:`${statusColor[req.status]}12`,color:statusColor[req.status],fontSize:12,fontWeight:700,flexShrink:0}}>
+                <option value="open">Open</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
+          </div>
+        ))}
+      </div>}
+
+      {tab==="reports"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
+        <div style={{background:t.card,borderRadius:16,padding:"18px",boxShadow:t.shadow,border:`1px solid ${t.border}`}}>
+          <div style={{fontSize:14,fontWeight:800,color:t.text,marginBottom:14}}>Requests by Status</div>
+          {[["Open",openReqs,reqs.length,"#EF4444"],["In Progress",inProg,reqs.length,"#F59E0B"],["Resolved",resolved,reqs.length,"#10B981"]].map(([l,v,tot,c])=>(
+            <div key={l} style={{marginBottom:12}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:5,fontSize:13,fontWeight:600,color:t.text}}><span>{l}</span><span style={{color:c,fontWeight:700}}>{v}</span></div>
+              <div style={{height:8,borderRadius:8,background:t.bg,overflow:"hidden"}}><div style={{height:"100%",borderRadius:8,background:c,width:`${tot>0?Math.round(v/tot*100):0}%`,transition:"width .4s ease"}}/></div>
+            </div>
+          ))}
+        </div>
+        <div style={{background:t.card,borderRadius:16,padding:"18px",boxShadow:t.shadow,border:`1px solid ${t.border}`}}>
+          <div style={{fontSize:14,fontWeight:800,color:t.text,marginBottom:14}}>Resident Dues Summary</div>
+          {[["Paid",totalDues,residents.length,"#10B981"],["Overdue",overdue,residents.length,"#EF4444"],["Pending",residents.filter(r=>r.dues==="pending").length,residents.length,"#F59E0B"]].map(([l,v,tot,c])=>(
+            <div key={l} style={{marginBottom:12}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:5,fontSize:13,fontWeight:600,color:t.text}}><span>{l}</span><span style={{color:c,fontWeight:700}}>{v} residents</span></div>
+              <div style={{height:8,borderRadius:8,background:t.bg,overflow:"hidden"}}><div style={{height:"100%",borderRadius:8,background:c,width:`${tot>0?Math.round(v/tot*100):0}%`,transition:"width .4s ease"}}/></div>
+            </div>
+          ))}
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+          {[{l:"Total Events",v:data.events.length,ic:"📅"},{l:"Total News",v:data.announcements.length,ic:"📢"},{l:"Active Residents",v:residents.filter(r=>r.status==="active").length,ic:"👥"},{l:"Board Members",v:data.boardMembers.length,ic:"🏛️"}].map((s,i)=>(
+            <div key={i} style={{background:t.card,borderRadius:14,padding:"14px",boxShadow:t.shadow,border:`1px solid ${t.border}`,textAlign:"center"}}>
+              <div style={{fontSize:24,marginBottom:4}}>{s.ic}</div>
+              <div style={{fontSize:22,fontWeight:900,color:t.primary}}>{s.v}</div>
+              <div style={{fontSize:11,color:t.muted,marginTop:2}}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+        <button onClick={()=>toast("Report exported! (demo)")} style={{padding:"12px",borderRadius:12,background:t.bg,color:t.text,fontSize:13,fontWeight:700,border:`1px solid ${t.border}`,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export Full Report
+        </button>
+      </div>}
+    </div>
+  );
+};
+
+// ─── Themes ──────────────────────────────────────────────────────────────────
+const themes={
+  millbrook:{
+    name:"Millbrook East",city:"Lancaster, TX 75146",tagline:"Established Community",
+    primary:"#1B5E3C",primaryLight:"#E4F2EB",primarySoft:"#2D8B5A",
+    accent:"#C5954B",accentLight:"#FDF4E3",
+    bg:"#F5F4F0",card:"#FFFFFF",text:"#1A1612",soft:"#4A3F35",muted:"#9A8E82",border:"rgba(0,0,0,0.07)",
+    shadow:"0 1px 3px rgba(0,0,0,0.05),0 4px 16px rgba(0,0,0,0.05)",
+    font:"'Plus Jakarta Sans',sans-serif",headFont:"'Lora',serif",
+    heroLogo:MILL_HERO,sbLogo:MILL_SB,
+    admin:{name:"Evelyne Djamat Dubois",address:"1937 Cross Oaks Dr, Lancaster, TX 75146",role:"Community Administrator",av:"ED"},
+    boardMembers:[{id:1,name:"Evelyne Djamat Dubois",role:"President",av:"ED"},{id:2,name:"Board Member",role:"Vice President",av:"VP"},{id:3,name:"Board Member",role:"Secretary",av:"SE"},{id:4,name:"Board Member",role:"Treasurer",av:"TR"}],
+    announcements:[
+      {id:1,title:"Yard of the Month Winner",content:"Congratulations to the Martinez family at 1945 Willowbrook Ln! Their beautiful landscaping is an inspiration to the entire community.",date:"Mar 20, 2026",type:"award",icon:"🏆"},
+      {id:2,title:"Bulk Trash Pickup Schedule",content:"Bulk trash pickup is the first Monday of every month. Items curbside by 7:00 AM.\n\nNext pickup: April 7, 2026",date:"Mar 18, 2026",type:"schedule",icon:"🗑️"},
+      {id:3,title:"Spring Landscaping Reminder",content:"Please maintain yards and trim overgrown bushes or trees that obstruct sidewalks. Violations will receive courtesy notices.",date:"Mar 15, 2026",type:"general",icon:"🌿"},
+      {id:4,title:"Street Light Repairs",content:"City of Lancaster notified about broken street lights on Cross Oaks Dr. Repairs scheduled for next week.",date:"Mar 10, 2026",type:"update",icon:"💡"},
+    ],
+    polls:[
+      {id:101,title:"Should we add a community dog park?",date:"Apr 14, 2026",options:[{text:"Yes, definitely!",votes:42},{text:"No, not necessary",votes:8},{text:"Maybe in the future",votes:15}],voted:false},
+      {id:102,title:"Preferred time for the Fall Festival?",date:"Apr 5, 2026",options:[{text:"Morning (10 AM–2 PM)",votes:18},{text:"Afternoon (2 PM–6 PM)",votes:35},{text:"Evening (5 PM–9 PM)",votes:22}],voted:false},
+    ],
+    events:[
+      {id:1,title:"National Night Out",date:"August 4, 2026",time:"6:00 PM – 9:00 PM",desc:"Annual celebration with food, music, games for kids, and local first responders!",icon:"🌟",location:"Millbrook East Common Area",rsvps:47},
+      {id:2,title:"Fall Festival",date:"October 24, 2026",time:"2:00 PM – 6:00 PM",desc:"Pumpkin decorating, costume parade, hayrides, and homemade treats!",icon:"🍂",location:"Community Pavilion",rsvps:31},
+      {id:3,title:"Monthly HOA Board Meeting",date:"April 12, 2026",time:"7:00 PM",desc:"Open to all residents. Budget review and community updates.",icon:"📋",location:"Community Clubhouse",rsvps:12},
+    ],
+    requests:[
+      {id:1,title:"Broken Streetlight — Willowbrook Ln",type:"electrical",priority:"high",status:"open",date:"Apr 18, 2026",unit:"Near 1942 Willowbrook Ln",desc:"Streetlight has been flickering and now completely out for 3 nights."},
+      {id:2,title:"Pothole on Community Main Dr",type:"roadway",priority:"medium",status:"in-progress",date:"Apr 10, 2026",unit:"Community Main Drive",desc:"Large pothole near the speed bump causing damage to vehicles."},
+      {id:3,title:"Gate Remote Not Working",type:"access",priority:"low",status:"resolved",date:"Apr 3, 2026",unit:"Front Entrance Gate",desc:"Gate remote stopped working, needed reprogramming."},
+      {id:4,title:"Irrigation System Leak",type:"landscaping",priority:"medium",status:"open",date:"Apr 15, 2026",unit:"Common Area Park",desc:"Sprinkler head is broken and wasting water near the park area."},
+    ],
+    docs:[
+      {id:1,title:"HOA Bylaws 2024",category:"Legal",updated:"Jan 2024",size:"2.4 MB"},
+      {id:2,title:"Community Rules & Regulations",category:"Rules",updated:"Mar 2024",size:"1.1 MB"},
+      {id:3,title:"Q1 2026 Meeting Minutes",category:"Minutes",updated:"Apr 2026",size:"0.5 MB"},
+      {id:4,title:"Annual Dues Payment Form",category:"Forms",updated:"2026",size:"0.3 MB"},
+      {id:5,title:"Landscaping Standards Guide",category:"Rules",updated:"2024",size:"0.8 MB"},
+    ],
+    gallery:[
+      {id:1,title:"Community Entrance",desc:"Millbrook East sign",color:"#1B5E3C"},
+      {id:2,title:"National Night Out 2025",desc:"Neighbors celebrating",color:"#C5954B"},
+      {id:3,title:"Yard of the Month",desc:"Award-winning landscape",color:"#2D8B5A"},
+      {id:4,title:"Fall Festival 2025",desc:"Pumpkins and fun!",color:"#B85C38"},
+      {id:5,title:"Community Park",desc:"Green spaces",color:"#3A7CA5"},
+      {id:6,title:"Holiday Decorations",desc:"Festive community",color:"#8B5CF6"},
+    ],
+  },
+  oakridge:{
+    name:"Oakridge Heights",city:"Cedar Hill, TX 75104",tagline:"Modern Community Living",
+    primary:"#2E4057",primaryLight:"#E8EDF4",primarySoft:"#4A6B8A",
+    accent:"#C17F59",accentLight:"#FAF0E8",
+    bg:"#F2F4F7",card:"#FFFFFF",text:"#1A1F2E",soft:"#3D4A5C",muted:"#8E99A8",border:"rgba(0,0,0,0.07)",
+    shadow:"0 1px 3px rgba(0,0,0,0.05),0 4px 16px rgba(0,0,0,0.05)",
+    font:"'Plus Jakarta Sans',sans-serif",headFont:"'Plus Jakarta Sans',sans-serif",
+    heroLogo:null,sbLogo:null,
+    admin:{name:"Michael Torres",address:"402 Summit Ridge Blvd, Cedar Hill, TX 75104",role:"HOA President",av:"MT"},
+    boardMembers:[{id:1,name:"Michael Torres",role:"President",av:"MT"},{id:2,name:"Sarah Chen",role:"Vice President",av:"SC"},{id:3,name:"David Okafor",role:"Secretary",av:"DO"},{id:4,name:"Lisa Park",role:"Treasurer",av:"LP"},{id:5,name:"James Wilson",role:"At-Large",av:"JW"}],
+    announcements:[
+      {id:1,title:"Pool Season Opens May 1st",content:"Community pool and splash pad open May 1st. Hours: 10 AM – 8 PM. Bring your resident access card. Guest passes available at the front office.",date:"Apr 15, 2026",type:"general",icon:"🏊"},
+      {id:2,title:"New Fitness Center Equipment",content:"New cardio machines and free weights have been installed in the gym. Open 24/7 with key fob access.",date:"Apr 10, 2026",type:"update",icon:"💪"},
+      {id:3,title:"Parking Enforcement Notice",content:"Starting May 1st, overnight street parking will receive warnings. Please use designated spots. Visitor passes available at office.",date:"Apr 8, 2026",type:"schedule",icon:"🚗"},
+      {id:4,title:"Welcome New Families!",content:"6 new families moved in this month! Please extend a warm welcome and help them feel at home in Oakridge.",date:"Apr 5, 2026",type:"award",icon:"🎉"},
+    ],
+    polls:[
+      {id:101,title:"Should we extend pool hours to 10 PM on weekends?",date:"Apr 12, 2026",options:[{text:"Yes, extend to 10 PM",votes:67},{text:"Keep current hours",votes:23},{text:"Add Saturday late-night only",votes:19}],voted:false},
+    ],
+    events:[
+      {id:1,title:"Summer Block Party",date:"June 14, 2026",time:"4:00 PM – 9:00 PM",desc:"Live DJ, food trucks, bounce houses, and fireworks! Free for all residents.",icon:"🎆",location:"Oakridge Heights Park",rsvps:84},
+      {id:2,title:"Movie Night Under the Stars",date:"July 18, 2026",time:"8:30 PM",desc:"Outdoor movie at the amphitheater. Popcorn provided. Bring blankets!",icon:"🎬",location:"Community Amphitheater",rsvps:52},
+      {id:3,title:"HOA Annual Meeting",date:"May 20, 2026",time:"6:30 PM",desc:"Board elections, budget approval, and community planning 2026–2027.",icon:"📋",location:"Oakridge Community Center",rsvps:38},
+      {id:4,title:"Neighborhood Cleanup Day",date:"April 26, 2026",time:"9:00 AM – 12:00 PM",desc:"Volunteer cleanup. Gloves and bags provided. Pizza party after!",icon:"🧹",location:"Meet at Front Gate",rsvps:29},
+    ],
+    requests:[
+      {id:1,title:"Pool Pump Making Noise",type:"plumbing",priority:"high",status:"in-progress",date:"Apr 17, 2026",unit:"Community Pool",desc:"Pool pump has been making loud grinding noises since last weekend."},
+      {id:2,title:"Tennis Court Net Torn",type:"amenity",priority:"medium",status:"open",date:"Apr 12, 2026",unit:"Tennis Court 2",desc:"The net on Court 2 is torn and needs replacement."},
+      {id:3,title:"Parking Lot Light Out",type:"electrical",priority:"medium",status:"resolved",date:"Apr 1, 2026",unit:"Visitor Parking Lot B",desc:"Light pole in visitor lot B was completely out. Now fixed."},
+    ],
+    docs:[
+      {id:1,title:"HOA Bylaws 2024",category:"Legal",updated:"Jan 2024",size:"2.1 MB"},
+      {id:2,title:"Community Rules & Regulations",category:"Rules",updated:"Feb 2024",size:"1.3 MB"},
+      {id:3,title:"Q1 2026 Meeting Minutes",category:"Minutes",updated:"Apr 2026",size:"0.6 MB"},
+      {id:4,title:"Pool Rules & Safety Guidelines",category:"Rules",updated:"Apr 2026",size:"0.4 MB"},
+    ],
+    gallery:[
+      {id:1,title:"Community Pool",desc:"Resort-style pool & splash pad",color:"#2E4057"},
+      {id:2,title:"Fitness Center",desc:"24/7 state-of-the-art gym",color:"#4A6B8A"},
+      {id:3,title:"Walking Trails",desc:"Scenic pathways",color:"#5B8A72"},
+      {id:4,title:"Playground",desc:"Modern play area",color:"#C17F59"},
+      {id:5,title:"Amphitheater",desc:"Outdoor movie venue",color:"#8B5CF6"},
+      {id:6,title:"Dog Park",desc:"Off-leash play area",color:"#059669"},
+    ],
+  },
+};
+
+// ─── Shared Components ───────────────────────────────────────────────────────
+function useWindowWidth(){const[w,setW]=useState(innerWidth);useEffect(()=>{const h=()=>setW(innerWidth);addEventListener("resize",h);return()=>removeEventListener("resize",h)},[]);return w}
+
+const Av=({ini,sz=36,bg})=>(
+  <div style={{width:sz,height:sz,borderRadius:sz>44?14:10,background:bg||"linear-gradient(135deg,#2E4057,#C17F59)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:Math.max(sz*.3,10),fontWeight:800,color:"#fff",letterSpacing:.5,flexShrink:0}}>{ini}</div>
+);
+
+const StatusDot=({status})=>{
+  const c={open:"#EF4444","in-progress":"#F59E0B",resolved:"#10B981"}[status]||"#9CA3AF";
+  return <span style={{display:"inline-block",width:8,height:8,borderRadius:"50%",background:c,flexShrink:0}}/>;
+};
+
+const PriorityBadge=({priority,t})=>{
+  const cfg={high:{bg:"#FEE2E2",c:"#DC2626",label:"High"},medium:{bg:"#FEF3C7",c:"#D97706",label:"Medium"},low:{bg:"#D1FAE5",c:"#059669",label:"Low"}};
+  const s=cfg[priority]||cfg.low;
+  return <span style={{padding:"2px 8px",borderRadius:20,background:s.bg,color:s.c,fontSize:10,fontWeight:700,letterSpacing:.3}}>{s.label}</span>;
+};
+
+const Chip=({label,active,color,onClick,t})=>(
+  <button onClick={onClick} style={{padding:"6px 14px",borderRadius:20,border:`1px solid ${active?(color||t.primary):t.border}`,background:active?`${color||t.primary}15`:"transparent",color:active?(color||t.primary):t.muted,fontSize:12,fontWeight:active?700:500,whiteSpace:"nowrap"}}>{label}</button>
+);
+
+const Toast=({msg,show,t})=>show?(
+  <div style={{position:"fixed",bottom:90,left:"50%",transform:"translateX(-50%)",padding:"11px 24px",borderRadius:30,background:t.text,color:"#fff",fontSize:13,fontWeight:600,zIndex:999,animation:"scaleIn .25s ease",whiteSpace:"nowrap",boxShadow:"0 8px 24px rgba(0,0,0,0.2)"}}>{msg}</div>
+):null;
+
+const Modal=({open,onClose,title,children,t})=>open?(
+  <>
+    <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.3)",zIndex:200,backdropFilter:"blur(6px)"}}/>
+    <div style={{position:"fixed",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"92%",maxWidth:500,maxHeight:"88vh",overflow:"auto",background:"#fff",borderRadius:24,boxShadow:"0 24px 64px rgba(0,0,0,0.18)",zIndex:201,animation:"scaleIn .22s ease"}}>
+      <div style={{padding:"18px 22px 16px",borderBottom:`1px solid ${t.border}`,display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,background:"#fff",borderRadius:"24px 24px 0 0",zIndex:1}}>
+        <span style={{fontSize:17,fontWeight:800,color:t.text,fontFamily:t.headFont}}>{title}</span>
+        <button onClick={onClose} style={{width:32,height:32,borderRadius:"50%",background:t.bg,display:"flex",alignItems:"center",justifyContent:"center",color:t.muted}}><Ic.X/></button>
+      </div>
+      <div style={{padding:22}}>{children}</div>
+    </div>
+  </>
+):null;
+
+const InputStyle=t=>({width:"100%",padding:"11px 14px",borderRadius:12,border:`1px solid ${t.border}`,background:t.bg,color:t.text,fontSize:13,boxSizing:"border-box"});
+const BtnPrimary=(t,label,onClick,full)=>(
+  <button onClick={onClick} style={{width:full?"100%":"auto",padding:"12px 22px",borderRadius:12,background:t.primary,color:"#fff",fontSize:14,fontWeight:700}}>{label}</button>
+);
+
+// ─── Community Selector ──────────────────────────────────────────────────────
+const CommSelector=({onSelect,mob})=>{
+  const keys=Object.keys(themes);
+  return(
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",minHeight:"100vh",background:"linear-gradient(160deg,#F5F4F0 0%,#E8E3DC 100%)",padding:24}}>
+      <div style={{textAlign:"center",marginBottom:36,animation:"fadeUp .6s ease"}}>
+        <div style={{width:56,height:56,borderRadius:16,background:"linear-gradient(135deg,#1B5E3C,#2D8B5A)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,fontWeight:900,color:"#fff",margin:"0 auto 20px",boxShadow:"0 8px 24px rgba(27,94,60,.25)"}}>CH</div>
+        <h1 style={{fontSize:mob?26:32,fontWeight:900,color:"#1A1612",fontFamily:"'Lora',serif",lineHeight:1.2}}>Your Communities</h1>
+        <p style={{fontSize:14,color:"#9A8E82",marginTop:8}}>Select a community to manage</p>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:16,width:"100%",maxWidth:660}}>
+        {keys.map((k,i)=>{
+          const c=themes[k];
+          const openReqs=c.requests.filter(r=>r.status!=="resolved").length;
+          return(
+            <div key={k} onClick={()=>onSelect(k)} style={{background:"#fff",borderRadius:22,overflow:"hidden",cursor:"pointer",animation:`fadeUp .5s ease ${i*150}ms both`,transition:"transform .2s,box-shadow .2s",boxShadow:"0 2px 12px rgba(0,0,0,0.07)"}}
+              onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-4px)";e.currentTarget.style.boxShadow=`0 12px 40px rgba(0,0,0,0.12)`}}
+              onMouseLeave={e=>{e.currentTarget.style.transform="";e.currentTarget.style.boxShadow="0 2px 12px rgba(0,0,0,0.07)"}}>
+              <div style={{height:88,background:`linear-gradient(135deg,${c.primary},${c.primarySoft})`,display:"flex",alignItems:"center",gap:14,padding:"0 22px",position:"relative",overflow:"hidden"}}>
+                <div style={{position:"absolute",top:-24,right:-24,width:100,height:100,borderRadius:"50%",background:"rgba(255,255,255,0.08)"}}/>
+                {c.sbLogo?<img src={c.sbLogo} style={{width:42,height:42,borderRadius:12,objectFit:"cover",border:"2px solid rgba(255,255,255,.3)"}}/>:<div style={{width:42,height:42,borderRadius:12,background:"rgba(255,255,255,0.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:900,color:"#fff"}}>{c.name.split(" ").map(w=>w[0]).join("").slice(0,2)}</div>}
+                <div style={{color:"#fff"}}><div style={{fontSize:17,fontWeight:800}}>{c.name}</div><div style={{fontSize:12,opacity:.75,marginTop:1}}>{c.city}</div></div>
+              </div>
+              <div style={{padding:"14px 20px 18px"}}>
+                <div style={{display:"flex",gap:16,fontSize:12,color:c.soft}}>
+                  <span><b style={{color:c.text}}>{c.announcements.length}</b> news</span>
+                  <span><b style={{color:c.text}}>{c.events.length}</b> events</span>
+                  {openReqs>0&&<span><b style={{color:"#EF4444"}}>{openReqs}</b> open requests</span>}
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:8,marginTop:12}}>
+                  <Av ini={c.admin.av} sz={28} bg={`linear-gradient(135deg,${c.primary},${c.accent})`}/>
+                  <div><div style={{fontSize:12,fontWeight:700,color:c.text}}>{c.admin.name}</div><div style={{fontSize:10,color:c.muted}}>{c.admin.role}</div></div>
+                  <div style={{marginLeft:"auto",color:c.muted}}><Ic.ChevR/></div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ─── Home Page ───────────────────────────────────────────────────────────────
+const HomePage=({mob,t,data,goTo,setCreateAnnounce,setCreateEvent,setCreateRequest,setShowDocs,setShowGallery})=>{
+  const openReqs=data.requests.filter(r=>r.status!=="resolved").length;
+  const activity=[
+    ...data.announcements.slice(0,2).map(a=>({type:"announce",title:a.title,time:a.date,icon:"📢"})),
+    ...data.events.slice(0,1).map(e=>({type:"event",title:e.title,time:e.date,icon:"📅"})),
+    ...data.requests.filter(r=>r.status==="resolved").slice(0,1).map(r=>({type:"resolved",title:r.title+" — resolved",time:r.date,icon:"✅"})),
+  ].slice(0,5);
+  const nextEvent=data.events[0];
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:mob?16:20}}>
+      {/* Hero */}
+      <div style={{background:`linear-gradient(145deg,${t.primary},${t.primarySoft})`,borderRadius:22,padding:mob?"24px 20px":"32px 28px",color:"#fff",position:"relative",overflow:"hidden",animation:"fadeUp .5s ease"}}>
+        <div style={{position:"absolute",top:-30,right:-30,width:160,height:160,borderRadius:"50%",background:"rgba(255,255,255,0.07)"}}/>
+        <div style={{position:"absolute",bottom:-20,left:-20,width:120,height:120,borderRadius:"50%",background:"rgba(255,255,255,0.05)"}}/>
+        <div style={{display:"flex",alignItems:"center",gap:16,position:"relative"}}>
+          {t.heroLogo?<img src={t.heroLogo} style={{width:mob?64:78,height:mob?64:78,borderRadius:"50%",border:"3px solid rgba(255,255,255,.35)",objectFit:"cover",boxShadow:"0 4px 20px rgba(0,0,0,.2)"}}/>:<div style={{width:mob?64:78,height:mob?64:78,borderRadius:"50%",background:"rgba(255,255,255,0.15)",border:"3px solid rgba(255,255,255,.2)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:mob?24:30,fontWeight:900}}>{data.name.split(" ").map(w=>w[0]).join("").slice(0,2)}</div>}
+          <div><div style={{fontSize:11,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",opacity:.7,marginBottom:3}}>Welcome to</div><div style={{fontSize:mob?22:28,fontWeight:900,fontFamily:t.headFont,lineHeight:1.2}}>{data.name}</div><div style={{fontSize:13,opacity:.8,marginTop:4}}>{data.tagline} · {data.city}</div></div>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginTop:20,position:"relative"}}>
+          {[{l:"News",v:data.announcements.length,tab:"news"},{l:"Events",v:data.events.length,tab:"events"},{l:"Requests",v:openReqs,tab:"requests",alert:openReqs>0},{l:"Members",v:data.boardMembers.length,tab:"board"}].map((s,i)=>(
+            <div key={i} onClick={()=>goTo(s.tab)} style={{background:"rgba(255,255,255,0.15)",borderRadius:12,padding:"10px 8px",textAlign:"center",cursor:"pointer",backdropFilter:"blur(4px)",border:"1px solid rgba(255,255,255,.15)"}}
+              onMouseEnter={e=>e.currentTarget.style.background="rgba(255,255,255,0.22)"}
+              onMouseLeave={e=>e.currentTarget.style.background="rgba(255,255,255,0.15)"}>
+              <div style={{fontSize:mob?18:22,fontWeight:900,color:s.alert?"#FCA5A5":"#fff"}}>{s.v}</div>
+              <div style={{fontSize:10,opacity:.75,marginTop:1}}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Quick Actions */}
+      <div>
+        <div style={{fontSize:12,fontWeight:700,color:t.muted,letterSpacing:.8,textTransform:"uppercase",marginBottom:10}}>Quick Actions</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:mob?8:10}}>
+          {[
+            {icon:"📢",label:"Post News",action:()=>{goTo("news");setTimeout(()=>setCreateAnnounce(true),150)}},
+            {icon:"📅",label:"Add Event",action:()=>{goTo("events");setTimeout(()=>setCreateEvent(true),150)}},
+            {icon:"🔧",label:"Request",action:()=>{goTo("requests");setTimeout(()=>setCreateRequest(true),150)}},
+            {icon:"📁",label:"Docs",action:()=>setShowDocs(true)},
+          ].map((a,i)=>(
+            <button key={i} onClick={a.action} style={{background:t.card,borderRadius:16,padding:"14px 8px",display:"flex",flexDirection:"column",alignItems:"center",gap:6,boxShadow:t.shadow,border:`1px solid ${t.border}`,animation:`fadeUp .4s ease ${i*60}ms both`}}>
+              <span style={{fontSize:22}}>{a.icon}</span>
+              <span style={{fontSize:11,fontWeight:700,color:t.soft}}>{a.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+      {/* Next Event */}
+      {nextEvent&&<div style={{background:t.card,borderRadius:18,overflow:"hidden",boxShadow:t.shadow,border:`1px solid ${t.border}`,animation:"fadeUp .4s ease 200ms both"}}>
+        <div style={{height:4,background:`linear-gradient(90deg,${t.primary},${t.accent})`}}/>
+        <div style={{padding:mob?"16px":"20px"}}>
+          <div style={{fontSize:11,fontWeight:700,color:t.muted,letterSpacing:.8,textTransform:"uppercase",marginBottom:8}}>Next Event</div>
+          <div style={{display:"flex",alignItems:"center",gap:12}}>
+            <div style={{width:48,height:48,borderRadius:14,background:t.primaryLight,display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{nextEvent.icon}</div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:15,fontWeight:800,color:t.text}}>{nextEvent.title}</div>
+              <div style={{fontSize:12,color:t.muted,marginTop:3,display:"flex",alignItems:"center",gap:8}}>
+                <span style={{display:"flex",alignItems:"center",gap:4}}><Ic.Cal/>{nextEvent.date}</span>
+                <span style={{display:"flex",alignItems:"center",gap:4}}><Ic.Pin/>{nextEvent.location}</span>
+              </div>
+            </div>
+            <button onClick={()=>goTo("events")} style={{width:32,height:32,borderRadius:"50%",background:t.primaryLight,color:t.primary,display:"flex",alignItems:"center",justifyContent:"center"}}><Ic.ChevR/></button>
+          </div>
+        </div>
+      </div>}
+      {/* Activity Feed */}
+      <div style={{background:t.card,borderRadius:18,padding:mob?16:20,boxShadow:t.shadow,border:`1px solid ${t.border}`,animation:"fadeUp .4s ease 300ms both"}}>
+        <div style={{fontSize:14,fontWeight:800,color:t.text,marginBottom:14,fontFamily:t.headFont}}>Recent Activity</div>
+        {activity.map((a,i)=>(
+          <div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"9px 0",borderBottom:i<activity.length-1?`1px solid ${t.border}`:"none"}}>
+            <div style={{width:34,height:34,borderRadius:10,background:t.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{a.icon}</div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:13,fontWeight:600,color:t.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{a.title}</div>
+              <div style={{fontSize:11,color:t.muted,marginTop:1}}>{a.time}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* Gallery Quick Peek */}
+      <div>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
+          <div style={{fontSize:14,fontWeight:800,color:t.text,fontFamily:t.headFont}}>Community Gallery</div>
+          <button onClick={()=>setShowGallery(true)} style={{fontSize:12,fontWeight:700,color:t.primary,background:"none",display:"flex",alignItems:"center",gap:3}}>View all <Ic.ChevR/></button>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
+          {data.gallery.slice(0,3).map((ph,i)=>(
+            <div key={ph.id} onClick={()=>setShowGallery(true)} style={{borderRadius:14,height:mob?70:80,background:`linear-gradient(135deg,${ph.color}CC,${ph.color}88)`,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",cursor:"pointer",overflow:"hidden",position:"relative",animation:`fadeUp .4s ease ${400+i*60}ms both`}}>
+              <div style={{position:"absolute",inset:0,background:"rgba(0,0,0,0.1)"}}/>
+              <div style={{position:"relative",textAlign:"center",padding:"0 8px"}}>
+                <div style={{fontSize:11,fontWeight:700,color:"#fff",textShadow:"0 1px 3px rgba(0,0,0,.4)",lineHeight:1.2}}>{ph.title}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── News Page ───────────────────────────────────────────────────────────────
+const NewsPage=({mob,toast,t,data,openCreate,setOpenCreate})=>{
+  const[items,setItems]=useState([
+    ...data.announcements.map(a=>({...a,kind:"announce"})),
+    ...data.polls.map(p=>({...p,kind:"poll"})),
+  ].sort((a,b)=>b.id-a.id));
+  const[filter,setFilter]=useState("all");
+  const[search,setSearch]=useState("");
+  const[nt,setNT]=useState("");const[nc,setNC]=useState("");const[ny,setNY]=useState("general");
+  const typeColors={award:t.accent,schedule:t.primary,general:t.primarySoft,update:"#3A7CA5"};
+  const postAnnounce=()=>{if(!nt.trim()||!nc.trim())return;const icons={award:"🏆",schedule:"📅",general:"📣",update:"💡"};setItems([{id:Date.now(),title:nt,content:nc,date:"Just now",type:ny,icon:icons[ny],kind:"announce"},...items]);setNT("");setNC("");setOpenCreate(false);toast("Announcement posted!")};
+  const vote=(pollId,optIdx)=>{setItems(items.map(it=>{if(it.id!==pollId)return it;if(it.voted)return it;return{...it,voted:true,options:it.options.map((o,i)=>i===optIdx?{...o,votes:o.votes+1}:o)}}));toast("Vote recorded!")};
+  const filtered=items.filter(it=>{if(filter!=="all"&&it.kind!==filter)return false;if(search&&!it.title.toLowerCase().includes(search.toLowerCase()))return false;return true});
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div><div style={{fontSize:mob?20:24,fontWeight:900,color:t.text,fontFamily:t.headFont}}>Community News</div><div style={{fontSize:12,color:t.muted,marginTop:2}}>Announcements & polls</div></div>
+        <button onClick={()=>setOpenCreate(true)} style={{padding:"9px 18px",borderRadius:30,background:t.primary,color:"#fff",fontSize:13,fontWeight:700,display:"flex",alignItems:"center",gap:6}}><Ic.Plus/>Post</button>
+      </div>
+      <div style={{position:"relative"}}>
+        <div style={{position:"absolute",left:12,top:"50%",transform:"translateY(-50%)",color:t.muted,pointerEvents:"none"}}><Ic.Search/></div>
+        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search news..." style={{...InputStyle(t),paddingLeft:38,borderRadius:30}}/>
+      </div>
+      <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:4}}>
+        {[["all","All"],["announce","Announcements"],["poll","Polls"]].map(([k,l])=><Chip key={k} label={l} active={filter===k} onClick={()=>setFilter(k)} t={t}/>)}
+      </div>
+      {filtered.map((item,i)=>{
+        if(item.kind==="poll"){
+          const total=item.options.reduce((s,o)=>s+o.votes,0);
+          return(
+            <div key={item.id} style={{background:t.card,borderRadius:18,padding:mob?16:20,boxShadow:t.shadow,border:`1px solid ${t.border}`,animation:`fadeUp .35s ease ${i*50}ms both`}}>
+              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
+                <div style={{width:36,height:36,borderRadius:10,background:t.primaryLight,display:"flex",alignItems:"center",justifyContent:"center",color:t.primary}}><Ic.BarC/></div>
+                <div><div style={{fontSize:15,fontWeight:800,color:t.text}}>{item.title}</div><div style={{fontSize:11,color:t.muted,marginTop:1}}>{item.date} · Community Poll</div></div>
+              </div>
+              {item.options.map((opt,oi)=>{
+                const pct=total>0?Math.round(opt.votes/total*100):0;
+                return(
+                  <div key={oi} onClick={()=>vote(item.id,oi)} style={{marginBottom:8,cursor:item.voted?"default":"pointer"}} >
+                    <div style={{display:"flex",justifyContent:"space-between",marginBottom:4,fontSize:13,fontWeight:item.voted?600:500,color:t.text}}><span>{opt.text}</span><span style={{color:t.muted,fontWeight:600}}>{item.voted?`${pct}%`:opt.votes+" votes"}</span></div>
+                    <div style={{height:7,borderRadius:8,background:t.bg,overflow:"hidden"}}>
+                      <div style={{height:"100%",borderRadius:8,background:`linear-gradient(90deg,${t.primary},${t.primarySoft})`,width:`${pct}%`,transition:"width .4s ease"}}/>
+                    </div>
+                  </div>
+                );
+              })}
+              {!item.voted&&<div style={{fontSize:11,color:t.muted,marginTop:10,textAlign:"center"}}>Click an option to vote · {total} votes so far</div>}
+            </div>
+          );
+        }
+        return(
+          <div key={item.id} style={{background:t.card,borderRadius:18,padding:mob?16:20,boxShadow:t.shadow,border:`1px solid ${t.border}`,animation:`fadeUp .35s ease ${i*50}ms both`}}>
+            <div style={{display:"flex",gap:12}}>
+              <div style={{width:44,height:44,borderRadius:12,background:`${typeColors[item.type]||t.primary}15`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{item.icon}</div>
+              <div style={{flex:1}}>
+                <div style={{display:"flex",alignItems:"center",gap:8,flexWrap:"wrap"}}>
+                  <span style={{fontSize:15,fontWeight:800,color:t.text}}>{item.title}</span>
+                  <span style={{padding:"2px 8px",borderRadius:20,background:`${typeColors[item.type]||t.primary}15`,fontSize:10,fontWeight:700,color:typeColors[item.type]||t.primary,textTransform:"capitalize"}}>{item.type}</span>
+                </div>
+                <div style={{fontSize:13,color:t.soft,lineHeight:1.75,marginTop:8,whiteSpace:"pre-line"}}>{item.content}</div>
+                <div style={{fontSize:11,color:t.muted,marginTop:8,fontWeight:600}}>{item.date}</div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+      {filtered.length===0&&<div style={{textAlign:"center",padding:"48px 0",color:t.muted}}>
+        <div style={{fontSize:36,marginBottom:8}}>🔍</div>
+        <div style={{fontSize:14,fontWeight:600}}>No results found</div>
+      </div>}
+      <Modal open={openCreate} onClose={()=>setOpenCreate(false)} title="New Announcement" t={t}>
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <input value={nt} onChange={e=>setNT(e.target.value)} placeholder="Title *" style={InputStyle(t)}/>
+          <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+            {[["award","Award"],["schedule","Schedule"],["general","General"],["update","Update"]].map(([k,l])=><Chip key={k} label={l} active={ny===k} color={{award:t.accent,schedule:t.primary,general:t.primarySoft,update:"#3A7CA5"}[k]} onClick={()=>setNY(k)} t={t}/>)}
+          </div>
+          <textarea value={nc} onChange={e=>setNC(e.target.value)} placeholder="Content *" rows={4} style={{...InputStyle(t),resize:"vertical"}}/>
+          <button onClick={postAnnounce} style={{padding:"13px",borderRadius:12,background:t.primary,color:"#fff",fontSize:14,fontWeight:700}}>Post Announcement</button>
+        </div>
+      </Modal>
+    </div>
+  );
+};
+
+// ─── Events Page ─────────────────────────────────────────────────────────────
+const EventsPage=({mob,toast,t,data,openCreate,setOpenCreate})=>{
+  const[evts,setEvts]=useState(data.events);
+  const[rsvp,setR]=useState({});
+  const[nt,setNT]=useState("");const[nd,setND]=useState("");const[nti,setNTI]=useState("");const[nde,setNDE]=useState("");const[nloc,setNL]=useState("");
+  const create=()=>{if(!nt.trim()||!nd.trim())return;setEvts([{id:Date.now(),title:nt,date:nd,time:nti||"TBD",desc:nde,icon:"🌟",location:nloc||data.name,rsvps:0},...evts]);setNT("");setND("");setNTI("");setNDE("");setNL("");setOpenCreate(false);toast("Event created!")};
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div><div style={{fontSize:mob?20:24,fontWeight:900,color:t.text,fontFamily:t.headFont}}>Events</div><div style={{fontSize:12,color:t.muted,marginTop:2}}>{evts.length} upcoming events</div></div>
+        <button onClick={()=>setOpenCreate(true)} style={{padding:"9px 18px",borderRadius:30,background:t.primary,color:"#fff",fontSize:13,fontWeight:700,display:"flex",alignItems:"center",gap:6}}><Ic.Plus/>Create</button>
+      </div>
+      {evts.map((ev,i)=>(
+        <div key={ev.id} style={{background:t.card,borderRadius:20,overflow:"hidden",boxShadow:t.shadow,border:`1px solid ${t.border}`,animation:`fadeUp .4s ease ${i*70}ms both`}}>
+          <div style={{height:4,background:`linear-gradient(90deg,${t.primary},${t.accent})`}}/>
+          <div style={{padding:mob?16:20}}>
+            <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+              <div style={{width:50,height:50,borderRadius:14,background:t.primaryLight,display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,flexShrink:0}}>{ev.icon}</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:16,fontWeight:800,color:t.text,fontFamily:t.headFont}}>{ev.title}</div>
+                {ev.desc&&<div style={{fontSize:13,color:t.soft,lineHeight:1.7,marginTop:6}}>{ev.desc}</div>}
+                <div style={{display:"flex",flexWrap:"wrap",gap:mob?8:14,marginTop:10}}>
+                  <span style={{display:"flex",alignItems:"center",gap:5,fontSize:12,color:t.muted,fontWeight:600}}><Ic.Cal/>{ev.date}</span>
+                  <span style={{display:"flex",alignItems:"center",gap:5,fontSize:12,color:t.muted,fontWeight:600}}><Ic.Clock/>{ev.time}</span>
+                  {ev.location&&<span style={{display:"flex",alignItems:"center",gap:5,fontSize:12,color:t.muted,fontWeight:600}}><Ic.Pin/>{ev.location}</span>}
+                </div>
+                <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginTop:14}}>
+                  <span style={{fontSize:12,color:t.muted,fontWeight:600}}>{(ev.rsvps||0)+(rsvp[ev.id]?1:0)} going</span>
+                  <button onClick={()=>{setR(r=>({...r,[ev.id]:!r[ev.id]}));toast(rsvp[ev.id]?"RSVP cancelled":"You're going! 🎉")}} style={{padding:"8px 20px",borderRadius:30,border:`1.5px solid ${rsvp[ev.id]?t.primary:t.border}`,background:rsvp[ev.id]?t.primaryLight:"transparent",color:rsvp[ev.id]?t.primary:t.soft,fontSize:13,fontWeight:700,display:"flex",alignItems:"center",gap:6}}>
+                    {rsvp[ev.id]?<><Ic.Check/>Going</>:"RSVP"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+      <Modal open={openCreate} onClose={()=>setOpenCreate(false)} title="Create Event" t={t}>
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <input value={nt} onChange={e=>setNT(e.target.value)} placeholder="Event name *" style={InputStyle(t)}/>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            <input value={nd} onChange={e=>setND(e.target.value)} placeholder="Date *" style={InputStyle(t)}/>
+            <input value={nti} onChange={e=>setNTI(e.target.value)} placeholder="Time" style={InputStyle(t)}/>
+          </div>
+          <input value={nloc} onChange={e=>setNL(e.target.value)} placeholder="Location" style={InputStyle(t)}/>
+          <textarea value={nde} onChange={e=>setNDE(e.target.value)} placeholder="Description" rows={3} style={{...InputStyle(t),resize:"vertical"}}/>
+          <button onClick={create} style={{padding:"13px",borderRadius:12,background:t.primary,color:"#fff",fontSize:14,fontWeight:700}}>Create Event</button>
+        </div>
+      </Modal>
+    </div>
+  );
+};
+
+// ─── Requests Page ───────────────────────────────────────────────────────────
+const RequestsPage=({mob,toast,t,data,openCreate,setOpenCreate})=>{
+  const[reqs,setReqs]=useState(data.requests);
+  const[filter,setFilter]=useState("all");
+  const[nt,setNT]=useState("");const[ntype,setNType]=useState("general");const[npri,setNPri]=useState("medium");const[nunit,setNUnit]=useState("");const[ndesc,setNDesc]=useState("");
+  const statusLabel={open:"Open","in-progress":"In Progress",resolved:"Resolved"};
+  const statusColor={open:"#EF4444","in-progress":"#F59E0B",resolved:"#10B981"};
+  const typeIcons={electrical:"⚡",plumbing:"🔧",landscaping:"🌿",roadway:"🛣️",access:"🔐",amenity:"🏊",general:"📋"};
+  const create=()=>{if(!nt.trim())return;setReqs([{id:Date.now(),title:nt,type:ntype,priority:npri,status:"open",date:"Just now",unit:nunit||"Community",desc:ndesc},...reqs]);setNT("");setNUnit("");setNDesc("");setOpenCreate(false);toast("Request submitted!")};
+  const filtered=filter==="all"?reqs:reqs.filter(r=>r.status===filter);
+  const counts={all:reqs.length,open:reqs.filter(r=>r.status==="open").length,"in-progress":reqs.filter(r=>r.status==="in-progress").length,resolved:reqs.filter(r=>r.status==="resolved").length};
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div><div style={{fontSize:mob?20:24,fontWeight:900,color:t.text,fontFamily:t.headFont}}>Maintenance</div><div style={{fontSize:12,color:t.muted,marginTop:2}}>Track community requests</div></div>
+        <button onClick={()=>setOpenCreate(true)} style={{padding:"9px 18px",borderRadius:30,background:t.primary,color:"#fff",fontSize:13,fontWeight:700,display:"flex",alignItems:"center",gap:6}}><Ic.Plus/>Submit</button>
+      </div>
+      {/* Status summary bar */}
+      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
+        {[["open","Open","#FEE2E2","#DC2626"],["in-progress","In Progress","#FEF3C7","#D97706"],["resolved","Resolved","#D1FAE5","#059669"]].map(([k,l,bg,c])=>(
+          <div key={k} onClick={()=>setFilter(filter===k?"all":k)} style={{background:filter===k?bg:t.card,borderRadius:14,padding:"12px",textAlign:"center",cursor:"pointer",border:`1.5px solid ${filter===k?c+"44":t.border}`,boxShadow:t.shadow,transition:"all .15s"}}>
+            <div style={{fontSize:20,fontWeight:900,color:filter===k?c:t.text}}>{counts[k]}</div>
+            <div style={{fontSize:11,fontWeight:600,color:filter===k?c:t.muted,marginTop:1}}>{l}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:4}}>
+        {[["all","All"],["open","Open"],["in-progress","In Progress"],["resolved","Resolved"]].map(([k,l])=><Chip key={k} label={`${l} (${counts[k]})`} active={filter===k} onClick={()=>setFilter(k)} t={t}/>)}
+      </div>
+      {filtered.map((req,i)=>(
+        <div key={req.id} style={{background:t.card,borderRadius:18,padding:mob?16:20,boxShadow:t.shadow,border:`1px solid ${t.border}`,animation:`fadeUp .35s ease ${i*60}ms both`}}>
+          <div style={{display:"flex",gap:12}}>
+            <div style={{width:46,height:46,borderRadius:13,background:t.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>{typeIcons[req.type]||"📋"}</div>
+            <div style={{flex:1}}>
+              <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8}}>
+                <div style={{fontSize:14,fontWeight:800,color:t.text,lineHeight:1.3}}>{req.title}</div>
+                <span style={{display:"flex",alignItems:"center",gap:5,padding:"3px 10px",borderRadius:20,background:`${statusColor[req.status]}15`,color:statusColor[req.status],fontSize:11,fontWeight:700,flexShrink:0,whiteSpace:"nowrap"}}><StatusDot status={req.status}/>{statusLabel[req.status]}</span>
+              </div>
+              {req.desc&&<div style={{fontSize:13,color:t.soft,marginTop:6,lineHeight:1.6}}>{req.desc}</div>}
+              <div style={{display:"flex",alignItems:"center",gap:8,marginTop:10,flexWrap:"wrap"}}>
+                <PriorityBadge priority={req.priority} t={t}/>
+                <span style={{fontSize:11,color:t.muted,display:"flex",alignItems:"center",gap:4}}><Ic.Pin/>{req.unit}</span>
+                <span style={{fontSize:11,color:t.muted,marginLeft:"auto"}}>{req.date}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+      {filtered.length===0&&<div style={{textAlign:"center",padding:"48px 0",color:t.muted}}>
+        <div style={{fontSize:36,marginBottom:8}}>✅</div>
+        <div style={{fontSize:14,fontWeight:600}}>No {filter==="all"?"requests":filter+" requests"}</div>
+      </div>}
+      <Modal open={openCreate} onClose={()=>setOpenCreate(false)} title="Submit Request" t={t}>
+        <div style={{display:"flex",flexDirection:"column",gap:12}}>
+          <input value={nt} onChange={e=>setNT(e.target.value)} placeholder="Issue title *" style={InputStyle(t)}/>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+            <select value={ntype} onChange={e=>setNType(e.target.value)} style={{...InputStyle(t),appearance:"none"}}>
+              {[["general","General"],["electrical","Electrical"],["plumbing","Plumbing"],["landscaping","Landscaping"],["roadway","Roadway"],["access","Gate/Access"],["amenity","Amenity"]].map(([k,l])=><option key={k} value={k}>{l}</option>)}
+            </select>
+            <select value={npri} onChange={e=>setNPri(e.target.value)} style={{...InputStyle(t),appearance:"none"}}>
+              {[["low","Low Priority"],["medium","Medium Priority"],["high","High Priority"]].map(([k,l])=><option key={k} value={k}>{l}</option>)}
+            </select>
+          </div>
+          <input value={nunit} onChange={e=>setNUnit(e.target.value)} placeholder="Location / address" style={InputStyle(t)}/>
+          <textarea value={ndesc} onChange={e=>setNDesc(e.target.value)} placeholder="Describe the issue..." rows={4} style={{...InputStyle(t),resize:"vertical"}}/>
+          <button onClick={create} style={{padding:"13px",borderRadius:12,background:t.primary,color:"#fff",fontSize:14,fontWeight:700}}>Submit Request</button>
+        </div>
+      </Modal>
+    </div>
+  );
+};
+
+// ─── Board Page ──────────────────────────────────────────────────────────────
+const BoardPage=({mob,toast,t,data})=>{
+  const[msgs,setMsgs]=useState([
+    {id:1,from:"Board",name:data.admin.name.split(" ")[0],text:"Welcome to the community board. We are here to help!",time:"Yesterday",av:data.admin.av},
+    {id:2,from:"Resident",name:"Resident",text:"When is the next board meeting scheduled?",time:"2h ago",av:"RE"},
+    {id:3,from:"Board",name:data.admin.name.split(" ")[0],text:"The next meeting is listed in the Events tab. All residents are welcome to attend!",time:"1h ago",av:data.admin.av},
+  ]);
+  const[nm,setNM]=useState("");
+  const endRef=useRef(null);
+  useEffect(()=>{if(endRef.current)endRef.current.parentElement.scrollTop=endRef.current.offsetTop},[msgs]);
+  const send=()=>{if(!nm.trim())return;setMsgs([...msgs,{id:Date.now(),from:"Resident",name:"You",text:nm,time:"Just now",av:"YO"}]);setNM("");toast("Message sent!")};
+  return(
+    <div style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{fontSize:mob?20:24,fontWeight:900,color:t.text,fontFamily:t.headFont}}>Board</div>
+      <div style={{background:t.card,borderRadius:18,padding:mob?16:20,boxShadow:t.shadow,border:`1px solid ${t.border}`}}>
+        <div style={{fontSize:13,fontWeight:700,color:t.muted,letterSpacing:.6,textTransform:"uppercase",marginBottom:12}}>Board Members</div>
+        <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:8}}>
+          {data.boardMembers.map((m,i)=>(
+            <div key={m.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",borderRadius:14,background:t.bg,animation:`fadeUp .35s ease ${i*50}ms both`}}>
+              <Av ini={m.av} sz={38} bg={m.role==="President"?`linear-gradient(135deg,${t.primary},${t.accent})`:undefined}/>
+              <div>
+                <div style={{fontSize:13,fontWeight:700,color:t.text}}>{m.name}</div>
+                <div style={{fontSize:11,color:t.primary,fontWeight:600,marginTop:1}}>{m.role}</div>
+              </div>
+              {m.role==="President"&&<div style={{marginLeft:"auto"}}><Ic.Star style={{color:t.accent}}/></div>}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{background:t.card,borderRadius:18,boxShadow:t.shadow,border:`1px solid ${t.border}`,display:"flex",flexDirection:"column",height:mob?360:420,overflow:"hidden"}}>
+        <div style={{padding:"14px 18px",borderBottom:`1px solid ${t.border}`,display:"flex",alignItems:"center",gap:10}}>
+          <div style={{width:8,height:8,borderRadius:"50%",background:"#10B981",flexShrink:0}}/>
+          <span style={{fontSize:13,fontWeight:800,color:t.text}}>Community Messages</span>
+          <span style={{marginLeft:"auto",fontSize:11,color:t.muted}}>Open to all residents</span>
+        </div>
+        <div style={{flex:1,overflowY:"auto",padding:14,display:"flex",flexDirection:"column",gap:10}}>
+          {msgs.map(m=>(
+            <div key={m.id} style={{display:"flex",gap:8,flexDirection:m.from==="Resident"&&m.name==="You"?"row-reverse":"row"}}>
+              <Av ini={m.av} sz={30} bg={m.from==="Board"?`linear-gradient(135deg,${t.primary},${t.accent})`:undefined}/>
+              <div style={{maxWidth:"72%"}}>
+                <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:3,flexDirection:m.from==="Resident"&&m.name==="You"?"row-reverse":"row"}}>
+                  <span style={{fontSize:12,fontWeight:700,color:m.from==="Board"?t.primary:t.text}}>{m.name}</span>
+                  {m.from==="Board"&&<span style={{padding:"1px 6px",borderRadius:8,background:t.primary,color:"#fff",fontSize:9,fontWeight:700}}>BOARD</span>}
+                  <span style={{fontSize:10,color:t.muted}}>{m.time}</span>
+                </div>
+                <div style={{background:m.from==="Board"?t.primaryLight:m.name==="You"?t.primary+"18":t.bg,borderRadius:14,padding:"9px 12px",fontSize:13,color:t.text,lineHeight:1.55}}>{m.text}</div>
+              </div>
+            </div>
+          ))}
+          <div ref={endRef}/>
+        </div>
+        <div style={{padding:"10px 12px",borderTop:`1px solid ${t.border}`,display:"flex",gap:8}}>
+          <input value={nm} onChange={e=>setNM(e.target.value)} onKeyDown={e=>e.key==="Enter"&&send()} placeholder="Message the board..." style={{flex:1,padding:"10px 14px",borderRadius:30,border:`1px solid ${t.border}`,background:t.bg,color:t.text,fontSize:13}}/>
+          <button onClick={send} style={{width:40,height:40,borderRadius:"50%",background:t.primary,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center"}}><Ic.Send/></button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Docs Modal ──────────────────────────────────────────────────────────────
+const DocsModal=({open,onClose,t,data})=>(
+  <Modal open={open} onClose={onClose} title="Documents & Resources" t={t}>
+    <div style={{display:"flex",flexDirection:"column",gap:10}}>
+      {data.docs.map((doc,i)=>(
+        <div key={doc.id} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",borderRadius:14,background:t.bg,border:`1px solid ${t.border}`}}>
+          <div style={{width:38,height:38,borderRadius:10,background:t.primaryLight,display:"flex",alignItems:"center",justifyContent:"center",color:t.primary,flexShrink:0}}><Ic.File/></div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:13,fontWeight:700,color:t.text}}>{doc.title}</div>
+            <div style={{fontSize:11,color:t.muted,marginTop:2}}>{doc.category} · Updated {doc.updated} · {doc.size}</div>
+          </div>
+          <button style={{width:30,height:30,borderRadius:"50%",background:t.primaryLight,color:t.primary,display:"flex",alignItems:"center",justifyContent:"center"}}><Ic.Download/></button>
+        </div>
+      ))}
+    </div>
+  </Modal>
+);
+
+// ─── Gallery Modal ───────────────────────────────────────────────────────────
+const GalleryModal=({open,onClose,t,data})=>(
+  <Modal open={open} onClose={onClose} title="Community Gallery" t={t}>
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+      {data.gallery.map(ph=>(
+        <div key={ph.id} style={{borderRadius:14,overflow:"hidden",cursor:"pointer"}}>
+          <div style={{height:90,background:`linear-gradient(135deg,${ph.color}DD,${ph.color}88)`,display:"flex",alignItems:"flex-end",padding:"0 12px 10px"}}>
+            <div><div style={{fontSize:13,fontWeight:800,color:"#fff",textShadow:"0 1px 4px rgba(0,0,0,.4)"}}>{ph.title}</div><div style={{fontSize:11,color:"rgba(255,255,255,.75)"}}>{ph.desc}</div></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </Modal>
+);
+
+// ─── Trial ───────────────────────────────────────────────────────────────────
+const TRIAL_DAYS=30;
+function getTrialInfo(){try{let d=localStorage.getItem("ch_trial_v2");if(!d){d=new Date().toISOString();localStorage.setItem("ch_trial_v2",d)}const e=Math.floor((new Date()-new Date(d))/(864e5));const r=Math.max(0,TRIAL_DAYS-e);return{remaining:r,expired:r<=0}}catch{return{remaining:TRIAL_DAYS,expired:false}}}
+function TrialBanner({remaining,t,onDismiss}){const[show,setShow]=useState(true);if(!show)return null;const warn=remaining<=5;return(
+  <div style={{padding:"7px 16px",background:warn?t.accentLight:t.primaryLight,borderBottom:`1px solid ${warn?t.accent:t.primary}22`,display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
+    <span style={{fontSize:12,fontWeight:700,color:warn?t.accent:t.primary,flex:1}}>{remaining===30?"🎉 Welcome! 30-day free trial started":warn?`⚠️ ${remaining} day${remaining===1?"":"s"} left in trial`:`✓ ${remaining} days remaining in trial`}</span>
+    <button onClick={()=>setShow(false)} style={{background:"none",color:t.muted,fontSize:16,lineHeight:1}}>×</button>
+  </div>
+);}
+
+// ─── Tweaks ──────────────────────────────────────────────────────────────────
+const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{"darkMode":false,"compactMode":false,"accentOverride":"","showActivityFeed":true}/*EDITMODE-END*/;
+
+// ─── App ─────────────────────────────────────────────────────────────────────
+const StaffIcon=()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+const PersonIcon=()=><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+const LogoutIcon=()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>;
+
+const residentTabs=[{id:"home",label:"Home",Icon:Ic.Home},{id:"news",label:"News",Icon:Ic.Bell},{id:"events",label:"Events",Icon:Ic.Cal},{id:"requests",label:"Requests",Icon:Ic.Wrench},{id:"board",label:"Board",Icon:Ic.Chat}];
+const staffTabs=[{id:"home",label:"Home",Icon:Ic.Home},{id:"news",label:"News",Icon:Ic.Bell},{id:"events",label:"Events",Icon:Ic.Cal},{id:"requests",label:"Requests",Icon:Ic.Wrench},{id:"board",label:"Board",Icon:Ic.Chat},{id:"manage",label:"Manage",Icon:StaffIcon}];
+
+function App(){
+  const w=useWindowWidth();const mob=w<700;const collapsed=w>=700&&w<1100;
+  const[user,setUser]=useState(null); // {name,email,role,av,unit}
+  const[ck,setCK]=useState(null);
+  const[at,setAT]=useState("home");
+  const[sb,setSB]=useState(false);
+  const[tm,setTM]=useState("");const[ts,setTS]=useState(false);
+  const[showDocs,setShowDocs]=useState(false);
+  const[showGallery,setShowGallery]=useState(false);
+  const[showProfile,setShowProfile]=useState(false);
+  const[createAnnounce,setCreateAnnounce]=useState(false);
+  const[createEvent,setCreateEvent]=useState(false);
+  const[createRequest,setCreateRequest]=useState(false);
+  const[tweaks,setTweaks]=useState(false);
+  const[loaded,setL]=useState(false);
+  useEffect(()=>setL(true),[]);
+  const toast=m=>{setTM(m);setTS(true);setTimeout(()=>setTS(false),2500)};
+  const trial=getTrialInfo();
+
+  // ── Auth guard ──
+  if(!user)return(
+    <div style={{opacity:loaded?1:0,transition:"opacity .5s"}}>
+      <AuthScreen onAuth={u=>{setUser(u);}} mob={mob}/>
+    </div>
+  );
+  const isStaff=user.role==="staff";
+  const tabs=isStaff?staffTabs:residentTabs;
+
+  if(trial.expired)return(
+    <div style={{minHeight:"100vh",background:"#F5F4F0",display:"flex",alignItems:"center",justifyContent:"center",padding:24}}>
+      <div style={{maxWidth:400,textAlign:"center",animation:"fadeUp .8s ease"}}>
+        <div style={{width:64,height:64,borderRadius:18,background:"linear-gradient(135deg,#1B5E3C,#2D8B5A)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:24,fontWeight:900,color:"#fff",margin:"0 auto 20px"}}>CH</div>
+        <h2 style={{fontSize:24,fontWeight:900,color:"#1A1612",fontFamily:"'Lora',serif"}}>Trial Ended</h2>
+        <p style={{fontSize:14,color:"#9A8E82",marginTop:8,lineHeight:1.7}}>Your 30-day trial has expired. Contact the developer for the full license.</p>
+      </div>
+    </div>
+  );
+
+  // ── Community selector ──
+  if(!ck)return(
+    <div style={{opacity:loaded?1:0,transition:"opacity .5s",height:"100%",display:"flex",flexDirection:"column"}}>
+      <TrialBanner remaining={trial.remaining} t={themes.millbrook}/>
+      {/* Top bar with user */}
+      <div style={{padding:"10px 20px",background:"#fff",borderBottom:"1px solid rgba(0,0,0,0.07)",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
+        <div style={{fontSize:14,fontWeight:800,color:"#1A1612",fontFamily:"'Lora',serif"}}>Community Hub</div>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
+          <Av ini={user.av} sz={30} bg="linear-gradient(135deg,#1B5E3C,#2D8B5A)"/>
+          <div style={{fontSize:12,fontWeight:700,color:"#1A1612"}}>{user.name.split(" ")[0]}</div>
+          {isStaff&&<span style={{padding:"2px 8px",borderRadius:20,background:"#1B5E3C",color:"#fff",fontSize:10,fontWeight:800}}>STAFF</span>}
+          <button onClick={()=>setUser(null)} style={{marginLeft:4,width:28,height:28,borderRadius:8,background:"#F5F4F0",color:"#9A8E82",display:"flex",alignItems:"center",justifyContent:"center"}} title="Logout"><LogoutIcon/></button>
+        </div>
+      </div>
+      <div style={{flex:1,overflow:"auto"}}><CommSelector onSelect={k=>{setCK(k);setAT("home")}} mob={mob}/></div>
+    </div>
+  );
+
+  const t=themes[ck];const data=themes[ck];
+  const openReqs=data.requests.filter(r=>r.status!=="resolved").length;
+  const pageProps={mob,toast,t,data,user};
+  const page=()=>{switch(at){
+    case"home":return<HomePage {...pageProps} goTo={id=>setAT(id)} setCreateAnnounce={setCreateAnnounce} setCreateEvent={setCreateEvent} setCreateRequest={setCreateRequest} setShowDocs={setShowDocs} setShowGallery={setShowGallery}/>;
+    case"news":return<NewsPage {...pageProps} openCreate={createAnnounce} setOpenCreate={setCreateAnnounce}/>;
+    case"events":return<EventsPage {...pageProps} openCreate={createEvent} setOpenCreate={setCreateEvent}/>;
+    case"requests":return<RequestsPage {...pageProps} openCreate={createRequest} setOpenCreate={setCreateRequest}/>;
+    case"board":return<BoardPage {...pageProps}/>;
+    case"manage":return isStaff?<StaffPage {...pageProps}/>:<HomePage {...pageProps} goTo={id=>setAT(id)} setCreateAnnounce={setCreateAnnounce} setCreateEvent={setCreateEvent} setCreateRequest={setCreateRequest} setShowDocs={setShowDocs} setShowGallery={setShowGallery}/>;
+    default:return null;
+  }};
+
+  const SidebarUserRow=({collapsed})=>(
+    <div style={{padding:collapsed?"10px 0":"12px 14px",borderTop:`1px solid ${t.border}`,display:"flex",alignItems:"center",gap:8,justifyContent:collapsed?"center":"flex-start",cursor:"pointer"}} onClick={()=>setShowProfile(true)}>
+      <Av ini={user.av} sz={30} bg={isStaff?`linear-gradient(135deg,${t.text},${t.soft})`:`linear-gradient(135deg,${t.primary},${t.accent})`}/>
+      {!collapsed&&<div style={{flex:1,minWidth:0}}>
+        <div style={{fontSize:12,fontWeight:700,color:t.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.name}</div>
+        <div style={{fontSize:10,color:isStaff?"#D97706":t.primary,fontWeight:600}}>{isStaff?"Staff · Admin":"Resident"}</div>
+      </div>}
+      {!collapsed&&<button onClick={e=>{e.stopPropagation();setUser(null);setCK(null);}} style={{width:26,height:26,borderRadius:8,background:t.bg,color:t.muted,display:"flex",alignItems:"center",justifyContent:"center"}} title="Logout"><LogoutIcon/></button>}
+    </div>
+  );
+
+  return(
+    <div style={{height:"100%",background:t.bg,color:t.text,display:"flex",flexDirection:"column",fontFamily:t.font,opacity:loaded?1:0,transition:"opacity .4s"}}>
+      <Toast msg={tm} show={ts} t={t}/>
+      <DocsModal open={showDocs} onClose={()=>setShowDocs(false)} t={t} data={data}/>
+      <GalleryModal open={showGallery} onClose={()=>setShowGallery(false)} t={t} data={data}/>
+
+      {/* Profile modal */}
+      <Modal open={showProfile} onClose={()=>setShowProfile(false)} title="My Profile" t={t}>
+        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+          <div style={{display:"flex",alignItems:"center",gap:14,padding:"14px",borderRadius:16,background:t.bg}}>
+            <Av ini={user.av} sz={54} bg={isStaff?`linear-gradient(135deg,${t.text},${t.soft})`:`linear-gradient(135deg,${t.primary},${t.accent})`}/>
+            <div>
+              <div style={{fontSize:18,fontWeight:800,color:t.text}}>{user.name}</div>
+              <div style={{fontSize:13,color:t.muted,marginTop:2}}>{user.email}</div>
+              <div style={{marginTop:6}}><span style={{padding:"3px 10px",borderRadius:20,background:isStaff?"#FEF3C7":t.primaryLight,color:isStaff?"#D97706":t.primary,fontSize:11,fontWeight:700}}>{isStaff?"Staff / Admin":"Resident"}</span></div>
+            </div>
+          </div>
+          {[["Unit / Address",user.unit||"—"],["Community",data.name],["City",data.city]].map(([l,v])=>(
+            <div key={l} style={{display:"flex",justifyContent:"space-between",padding:"10px 0",borderBottom:`1px solid ${t.border}`}}>
+              <span style={{fontSize:13,color:t.muted,fontWeight:600}}>{l}</span>
+              <span style={{fontSize:13,color:t.text,fontWeight:700}}>{v}</span>
+            </div>
+          ))}
+          <button onClick={()=>{setUser(null);setCK(null);setShowProfile(false);}} style={{padding:"12px",borderRadius:12,background:"#FEE2E2",color:"#DC2626",fontSize:13,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",gap:8,marginTop:4}}><LogoutIcon/>Sign Out</button>
+        </div>
+      </Modal>
+
+      {/* Mobile drawer */}
+      {mob&&sb&&<>
+        <div onClick={()=>setSB(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.3)",zIndex:90,backdropFilter:"blur(6px)"}}/>
+        <div style={{position:"fixed",top:0,left:0,bottom:0,width:268,background:"#fff",zIndex:100,display:"flex",flexDirection:"column",animation:"slideIn .22s ease",boxShadow:"4px 0 24px rgba(0,0,0,0.12)"}}>
+          <div style={{padding:"18px 16px 14px",borderBottom:`1px solid ${t.border}`,display:"flex",alignItems:"center",gap:10}}>
+            {t.sbLogo?<img src={t.sbLogo} style={{width:36,height:36,borderRadius:10,objectFit:"cover"}}/>:<Av ini={data.name.split(" ").map(x=>x[0]).join("").slice(0,2)} sz={36} bg={`linear-gradient(135deg,${t.primary},${t.accent})`}/>}
+            <div style={{flex:1}}><div style={{fontSize:14,fontWeight:800,color:t.text}}>{data.name}</div><div style={{fontSize:10,color:t.muted}}>{data.city}</div></div>
+            <button onClick={()=>setSB(false)} style={{background:"none",color:t.muted,width:28,height:28,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center"}}><Ic.X/></button>
+          </div>
+          {/* User strip */}
+          <div style={{padding:"10px 14px",background:isStaff?"#FFFBEB":t.primaryLight,display:"flex",alignItems:"center",gap:8}}>
+            <Av ini={user.av} sz={28} bg={isStaff?`linear-gradient(135deg,${t.text},${t.soft})`:`linear-gradient(135deg,${t.primary},${t.accent})`}/>
+            <div style={{flex:1,minWidth:0}}><div style={{fontSize:12,fontWeight:700,color:t.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.name}</div><div style={{fontSize:10,color:isStaff?"#D97706":t.primary,fontWeight:600}}>{isStaff?"Staff · Admin":"Resident"}</div></div>
+          </div>
+          <div style={{padding:"10px 8px",flex:1,display:"flex",flexDirection:"column",gap:2,overflowY:"auto"}}>
+            {tabs.map(tb=>{const a=at===tb.id;const isManage=tb.id==="manage";return(
+              <button key={tb.id} onClick={()=>{setAT(tb.id);setSB(false)}} style={{display:"flex",alignItems:"center",gap:12,padding:"11px 12px",borderRadius:12,background:a?(isManage?`${t.text}15`:t.primaryLight):"transparent",color:a?(isManage?t.text:t.primary):t.soft,fontWeight:a?700:500,fontSize:14,textAlign:"left",width:"100%",position:"relative"}}>
+                <tb.Icon/>{tb.label}
+                {tb.id==="manage"&&<span style={{marginLeft:"auto",padding:"1px 6px",borderRadius:8,background:`${t.text}20`,color:t.text,fontSize:9,fontWeight:800}}>STAFF</span>}
+                {tb.id==="requests"&&openReqs>0&&<span style={{marginLeft:"auto",width:18,height:18,borderRadius:"50%",background:"#EF4444",color:"#fff",fontSize:10,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center"}}>{openReqs}</span>}
+              </button>
+            );})}
+          </div>
+          <div style={{padding:"8px 8px",borderTop:`1px solid ${t.border}`,display:"flex",flexDirection:"column",gap:4}}>
+            <button onClick={()=>{setShowDocs(true);setSB(false)}} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 12px",borderRadius:11,background:"transparent",color:t.muted,fontSize:12,fontWeight:500,textAlign:"left",width:"100%"}}><Ic.File/>Documents</button>
+            <button onClick={()=>{setCK(null);setSB(false)}} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 12px",borderRadius:11,background:"transparent",color:t.muted,fontSize:12,fontWeight:500,textAlign:"left",width:"100%"}}><Ic.Switch/>Switch Community</button>
+            <button onClick={()=>{setUser(null);setCK(null);setSB(false)}} style={{display:"flex",alignItems:"center",gap:10,padding:"9px 12px",borderRadius:11,background:"transparent",color:"#DC2626",fontSize:12,fontWeight:600,textAlign:"left",width:"100%"}}><LogoutIcon/>Sign Out</button>
+          </div>
+        </div>
+      </>}
+
+      <TrialBanner remaining={trial.remaining} t={t}/>
+      <div style={{display:"flex",flex:1,minHeight:0}}>
+        {/* Sidebar desktop */}
+        {!mob&&<div style={{width:collapsed?68:248,background:"#fff",borderRight:`1px solid ${t.border}`,display:"flex",flexDirection:"column",flexShrink:0}}>
+          <div style={{padding:"16px 14px 12px",borderBottom:`1px solid ${t.border}`,display:"flex",alignItems:"center",gap:10}}>
+            {t.sbLogo?<img src={t.sbLogo} style={{width:34,height:34,borderRadius:10,objectFit:"cover",flexShrink:0}}/>:<Av ini={data.name.split(" ").map(x=>x[0]).join("").slice(0,2)} sz={34} bg={`linear-gradient(135deg,${t.primary},${t.accent})`}/>}
+            {!collapsed&&<div style={{minWidth:0}}><div style={{fontSize:13,fontWeight:800,color:t.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{data.name}</div><div style={{fontSize:10,color:t.muted,marginTop:1}}>{data.city}</div></div>}
+          </div>
+          {!collapsed&&<div style={{padding:"8px 12px",background:isStaff?"#FFFBEB":t.primaryLight,display:"flex",alignItems:"center",gap:8,borderBottom:`1px solid ${t.border}`,cursor:"pointer"}} onClick={()=>setShowProfile(true)}>
+            <Av ini={user.av} sz={26} bg={isStaff?`linear-gradient(135deg,${t.text},${t.soft})`:`linear-gradient(135deg,${t.primary},${t.accent})`}/>
+            <div style={{flex:1,minWidth:0}}><div style={{fontSize:11,fontWeight:700,color:t.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{user.name}</div><div style={{fontSize:9,color:isStaff?"#D97706":t.primary,fontWeight:700}}>{isStaff?"STAFF · ADMIN":"RESIDENT"}</div></div>
+          </div>}
+          <div style={{padding:"8px 6px",flex:1,display:"flex",flexDirection:"column",gap:1,overflowY:"auto"}}>
+            {tabs.map(tb=>{const a=at===tb.id;const isManage=tb.id==="manage";return(
+              <button key={tb.id} onClick={()=>setAT(tb.id)} title={collapsed?tb.label:""} style={{display:"flex",alignItems:"center",gap:10,padding:collapsed?"11px 0":"9px 12px",justifyContent:collapsed?"center":"flex-start",borderRadius:10,background:a?(isManage?`${t.text}12`:t.primaryLight):"transparent",color:a?(isManage?t.text:t.primary):t.soft,fontWeight:a?700:500,fontSize:13,width:"100%",position:"relative"}}>
+                {a&&!collapsed&&!isManage&&<div style={{position:"absolute",left:0,top:"50%",transform:"translateY(-50%)",width:3,height:18,borderRadius:4,background:t.primary}}/>}
+                <tb.Icon/>
+                {!collapsed&&<span style={{flex:1,textAlign:"left"}}>{tb.label}</span>}
+                {!collapsed&&tb.id==="manage"&&<span style={{padding:"1px 6px",borderRadius:6,background:`${t.text}15`,color:t.text,fontSize:9,fontWeight:800}}>STAFF</span>}
+                {!collapsed&&tb.id==="requests"&&openReqs>0&&<span style={{width:18,height:18,borderRadius:"50%",background:"#EF4444",color:"#fff",fontSize:10,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center"}}>{openReqs}</span>}
+                {collapsed&&tb.id==="requests"&&openReqs>0&&<span style={{position:"absolute",top:6,right:8,width:8,height:8,borderRadius:"50%",background:"#EF4444"}}/>}
+              </button>
+            );})}
+          </div>
+          <div style={{padding:"6px",borderTop:`1px solid ${t.border}`}}>
+            <button onClick={()=>setShowDocs(true)} title="Documents" style={{display:"flex",alignItems:"center",gap:10,padding:collapsed?"9px 0":"8px 12px",justifyContent:collapsed?"center":"flex-start",borderRadius:10,background:"transparent",color:t.muted,fontSize:12,fontWeight:500,width:"100%"}}><Ic.File/>{!collapsed&&"Documents"}</button>
+            <button onClick={()=>setCK(null)} title="Switch" style={{display:"flex",alignItems:"center",gap:10,padding:collapsed?"9px 0":"8px 12px",justifyContent:collapsed?"center":"flex-start",borderRadius:10,background:"transparent",color:t.muted,fontSize:12,fontWeight:500,width:"100%"}}><Ic.Switch/>{!collapsed&&"Switch Community"}</button>
+          </div>
+          <SidebarUserRow collapsed={collapsed}/>
+        </div>}
+
+        {/* Main content */}
+        <div style={{flex:1,display:"flex",flexDirection:"column",minWidth:0}}>
+          <div style={{padding:mob?"11px 14px":"12px 22px",borderBottom:`1px solid ${t.border}`,display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,0.85)",backdropFilter:"blur(12px)",flexShrink:0}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              {mob&&<button onClick={()=>setSB(true)} style={{width:34,height:34,borderRadius:10,background:t.bg,display:"flex",alignItems:"center",justifyContent:"center",color:t.text}}><Ic.Menu/></button>}
+              <div style={{fontSize:mob?15:17,fontWeight:800,color:t.text,fontFamily:t.headFont}}>{tabs.find(tb=>tb.id===at)?.label||"Home"}</div>
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              {at==="requests"&&openReqs>0&&<span style={{padding:"4px 10px",borderRadius:20,background:"#FEE2E2",color:"#DC2626",fontSize:11,fontWeight:700}}>{openReqs} open</span>}
+              {mob&&<button onClick={()=>setShowProfile(true)} style={{width:30,height:30,borderRadius:"50%",background:"transparent",overflow:"hidden",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <Av ini={user.av} sz={30} bg={isStaff?`linear-gradient(135deg,${t.text},${t.soft})`:`linear-gradient(135deg,${t.primary},${t.accent})`}/>
+              </button>}
+              <button onClick={()=>setTweaks(!tweaks)} style={{width:34,height:34,borderRadius:10,background:tweaks?t.primaryLight:t.bg,color:tweaks?t.primary:t.muted,display:"flex",alignItems:"center",justifyContent:"center"}} title="Tweaks"><Ic.Grid/></button>
+            </div>
+          </div>
+          <div style={{flex:1,overflow:"auto",padding:mob?14:24,paddingBottom:mob?80:24}}>
+            {page()}
+          </div>
+        </div>
+      </div>
+
+      {/* Tweaks panel */}
+      {tweaks&&<div style={{position:"fixed",bottom:mob?80:20,right:16,width:248,background:"#fff",borderRadius:18,boxShadow:"0 8px 32px rgba(0,0,0,0.15)",border:`1px solid ${t.border}`,zIndex:150,animation:"scaleIn .2s ease",transformOrigin:"bottom right",maxHeight:"80vh",overflow:"auto"}}>
+        <div style={{padding:"14px 16px 10px",borderBottom:`1px solid ${t.border}`,display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,background:"#fff",borderRadius:"18px 18px 0 0"}}>
+          <span style={{fontSize:14,fontWeight:800,color:t.text}}>Tweaks</span>
+          <button onClick={()=>setTweaks(false)} style={{width:26,height:26,borderRadius:"50%",background:t.bg,color:t.muted,display:"flex",alignItems:"center",justifyContent:"center"}}><Ic.X/></button>
+        </div>
+        <div style={{padding:"12px 14px 16px",display:"flex",flexDirection:"column",gap:10}}>
+          {/* User info */}
+          <div style={{padding:"10px 12px",borderRadius:12,background:isStaff?"#FFFBEB":t.primaryLight,border:`1px solid ${isStaff?"#FDE68A":t.primary+"22"}`}}>
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              <Av ini={user.av} sz={28} bg={isStaff?`linear-gradient(135deg,${t.text},${t.soft})`:`linear-gradient(135deg,${t.primary},${t.accent})`}/>
+              <div><div style={{fontSize:12,fontWeight:700,color:t.text}}>{user.name}</div><div style={{fontSize:10,color:isStaff?"#D97706":t.primary,fontWeight:600}}>{isStaff?"Staff · Admin":"Resident"}</div></div>
+            </div>
+          </div>
+          {/* Role switcher */}
+          <div style={{fontSize:11,fontWeight:700,color:t.muted,letterSpacing:.6,textTransform:"uppercase"}}>Switch Role (Demo)</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}>
+            {[["resident","🏠","Resident"],["staff","🛡️","Staff"]].map(([r,ic,l])=>(
+              <button key={r} onClick={()=>{setUser({...user,role:r});setAT("home");setTweaks(false);toast(`Switched to ${l} view`);}} style={{padding:"8px",borderRadius:10,background:user.role===r?t.primaryLight:t.bg,border:`1px solid ${user.role===r?t.primary:t.border}`,color:user.role===r?t.primary:t.soft,fontSize:12,fontWeight:user.role===r?700:500,display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
+                <span style={{fontSize:18}}>{ic}</span>{l}
+              </button>
+            ))}
+          </div>
+          <div style={{fontSize:11,fontWeight:700,color:t.muted,letterSpacing:.6,textTransform:"uppercase"}}>Community</div>
+          {Object.keys(themes).map(k=>(
+            <button key={k} onClick={()=>{setCK(k);setAT("home");setTweaks(false)}} style={{padding:"8px 12px",borderRadius:10,background:ck===k?t.primaryLight:t.bg,border:`1px solid ${ck===k?t.primary:t.border}`,color:ck===k?t.primary:t.text,fontSize:13,fontWeight:ck===k?700:500,textAlign:"left",display:"flex",alignItems:"center",gap:8}}>
+              {ck===k&&<Ic.Check/>}{themes[k].name}
+            </button>
+          ))}
+          <div style={{fontSize:11,fontWeight:700,color:t.muted,letterSpacing:.6,textTransform:"uppercase"}}>Quick Jump</div>
+          {tabs.map(tb=>(
+            <button key={tb.id} onClick={()=>{setAT(tb.id);setTweaks(false)}} style={{padding:"7px 12px",borderRadius:10,background:at===tb.id?t.primaryLight:t.bg,color:at===tb.id?t.primary:t.soft,fontSize:12,fontWeight:500,textAlign:"left",display:"flex",alignItems:"center",gap:8}}>
+              <tb.Icon/>{tb.label}
+            </button>
+          ))}
+          <div style={{borderTop:`1px solid ${t.border}`,paddingTop:10}}>
+            <button onClick={()=>{setUser(null);setCK(null);setTweaks(false)}} style={{width:"100%",padding:"9px 12px",borderRadius:10,background:"#FEE2E2",color:"#DC2626",fontSize:12,fontWeight:700,display:"flex",alignItems:"center",gap:8}}><LogoutIcon/>Sign Out</button>
+          </div>
+        </div>
+      </div>}
+
+      {/* Mobile bottom nav */}
+      {mob&&<div style={{position:"fixed",bottom:0,left:0,right:0,zIndex:80,background:"rgba(255,255,255,0.94)",backdropFilter:"blur(16px)",borderTop:`1px solid ${t.border}`,display:"flex",justifyContent:"space-around",padding:"5px 0",paddingBottom:"max(8px,env(safe-area-inset-bottom))"}}>
+        {tabs.map(tb=>{const a=at===tb.id;const isManage=tb.id==="manage";return(
+          <button key={tb.id} onClick={()=>setAT(tb.id)} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2,background:"none",color:a?(isManage?t.text:t.primary):t.muted,padding:"3px 6px",minWidth:42,position:"relative"}}>
+            {a&&<div style={{position:"absolute",top:-5,width:24,height:3,borderRadius:4,background:isManage?t.text:t.primary}}/>}
+            {tb.id==="requests"&&openReqs>0&&<span style={{position:"absolute",top:0,right:4,width:7,height:7,borderRadius:"50%",background:"#EF4444"}}/>}
+            <tb.Icon/>
+            <span style={{fontSize:9,fontWeight:a?700:400}}>{tb.label}</span>
+          </button>
+        );})}
+      </div>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
